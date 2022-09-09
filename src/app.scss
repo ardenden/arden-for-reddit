@@ -1,0 +1,46 @@
+$primary: #0d6efd;
+$secondary: #6c757d;
+$success: #198754;
+$info: #0dcaf0;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #212529;
+
+$blue: #0a58ca;
+$gray: #495057;
+$green: #479f76;
+$cyan: #0aa2c0;
+$yellow: #cc9a06;
+$red: #b02a37;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #d63384;
+$orange: #fd7e14;
+$teal: #20c997;
+
+$theme-colors: (
+  "blue": $blue,
+  "gray": $gray,
+  "green": $green,
+  "cyan": $cyan,
+  "yellow": $yellow,
+  "red": $red,
+  "indigo": $indigo,
+  "purple": $purple,
+  "pink": $pink,
+  "orange": $orange,
+  "teal": $teal,
+  "primary": $primary,
+  "secondary":$secondary,
+  "success":$success,
+  "info":$info,
+  "warning":$warning,
+  "danger":$danger,
+  "light":$light,
+  "dark":$dark
+);
+
+$enable-negative-margins: true;
+
+@import "~bootstrap/scss/bootstrap";
