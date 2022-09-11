@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Collapse } from 'react-bootstrap'
+import { Collapse, Container } from 'react-bootstrap'
 import { getMoreComments } from '../services/Comments'
 import { Comment } from '../types/Comment'
 import { More } from '../types/More'
 import { Thing } from '../types/Thing'
 import { getRelativeTime } from '../utils/DateUtils'
+import { renderHtml } from '../utils/StringUtils'
 
 type Props = {
   thingComment: Thing<Comment>
@@ -58,21 +59,24 @@ export default function Reply({ thingComment }: Props) {
         <Collapse in={!isCollapsed} timeout={50}>
           <div>
             <div>
-              <div className="w-75">{thingComment.data.body}</div>
-              <small className="text-muted">
-                <Link href={thingComment.data.permalink}>
-                  <a className="text-gray text-decoration-none">permalink</a>
-                </Link>
-                {
-                  thingComment.data.parent_id !== thingComment.data.link_id &&
-                  <>
-                    {' · '}
-                    <Link href={`${router.asPath}/${thingComment.data.parent_id.substring(3)}`}>
-                      <a className="text-gray text-decoration-none">parent</a>
-                    </Link>
-                  </>
-                }
-              </small>
+              <Container className="mx-0 px-0"
+                dangerouslySetInnerHTML={{ __html: renderHtml(thingComment.data.body_html) }} />
+              <div className="text-muted mt-n1">
+                <small>
+                  <Link href={thingComment.data.permalink}>
+                    <a className="text-gray text-decoration-none">permalink</a>
+                  </Link>
+                  {
+                    thingComment.data.parent_id !== thingComment.data.link_id &&
+                    <>
+                      {' · '}
+                      <Link href={`${router.asPath}/${thingComment.data.parent_id.substring(3)}`}>
+                        <a className="text-gray text-decoration-none">parent</a>
+                      </Link>
+                    </>
+                  }
+                </small>
+              </div>
             </div>
 
             {
