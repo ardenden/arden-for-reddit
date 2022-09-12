@@ -1,4 +1,6 @@
-export interface Subreddit {
+import { Created } from './Created'
+
+export interface Subreddit extends Created {
   id: string
   name: string
   accounts_active: number

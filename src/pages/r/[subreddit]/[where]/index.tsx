@@ -7,6 +7,8 @@ import { Link } from '../../../../types/Link'
 import { Listing } from '../../../../types/Listing'
 import { Thing } from '../../../../types/Thing'
 import { Subreddit } from '../../../../types/Subreddit'
+import { Col, Row } from 'react-bootstrap'
+import SubredditSidebar from '../../../../components/SubredditSidebar'
 
 type Props = {
   listingThings: Listing<Thing<Link | Comment>>
@@ -20,14 +22,21 @@ const SubredditWherePage: NextPage<Props> = ({ listingThings, thingSubreddit }) 
   return (
     <>
       <SubredditNav thingSubreddit={thingSubreddit} />
-      {
-        listingThings &&
-          where === 'comments'
-          ? 'comments page'
-          : where === 'wiki'
-            ? 'wiki page'
-            : <SubredditPosts listingLinks={listingThings as Listing<Thing<Link>>} />
-      }
+      <Row>
+        <Col className="pe-0">
+          {
+            listingThings &&
+              where === 'comments'
+              ? 'comments page'
+              : where === 'wiki'
+                ? 'wiki page'
+                : <SubredditPosts listingLinks={listingThings as Listing<Thing<Link>>} />
+          }
+        </Col>
+        <Col className="col-auto ps-0">
+          <SubredditSidebar subreddit={thingSubreddit.data} />
+        </Col>
+      </Row>
     </>
   )
 }

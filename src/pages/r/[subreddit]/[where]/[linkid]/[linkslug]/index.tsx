@@ -1,10 +1,11 @@
 import { GetServerSideProps, NextPage } from 'next'
 import { useState } from 'react'
-import { Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import Post from '../../../../../../components/Post'
 import Reply from '../../../../../../components/Reply'
 import ReplySort from '../../../../../../components/ReplySort'
 import SubredditNav from '../../../../../../components/SubredditNav'
+import SubredditSidebar from '../../../../../../components/SubredditSidebar'
 import { fetchData } from '../../../../../../services/API'
 import { getMoreComments } from '../../../../../../services/Comments'
 import { Comment } from '../../../../../../types/Comment'
@@ -37,59 +38,68 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit
   return (
     <>
       <SubredditNav thingSubreddit={thingSubreddit} />
-      <div className="px-2 mb-3">
-        {
-          link &&
-          <Row className="mt-3 mb-2 lh-sm px-2">
-            <Post link={link} />
-          </Row>
-        }
-        <ReplySort />
-        <hr className="mt-0" />
-        {
-          thingReplies &&
-          <>
+      <Row>
+        <Col className="pe-0">
+          <div className="mb-3">
             {
-              thingReplies.map((thingReply, i) => (
-                <div key={i}>
-                  {
-                    thingReply.kind === 'more'
-                      ?
-                      <>
-                        {
-                          thingComments.length > 0 &&
-                          thingComments.map((thingComment, i) => (
-                            <div key={i}>
-                              <Reply thingComment={thingComment as Thing<Comment>} />
-                              <hr />
-                            </div>
-                          ))
-                        }
-
-                        {
-                          isLoading
-                            ? <small className="text-orange fw-bold px-2">loading...</small>
-                            : (thingReply.data as More).children.length > 0 &&
-                            <small>
-                              <a onClick={loadMoreComments} style={{ cursor: 'pointer' }}>
-                                <span className="text-blue fw-bold px-2">load more comments</span> {' '}
-                                <span className="text-muted fw-normal">({(thingReply.data as More).count} replies)</span>
-                              </a>
-                            </small>
-                        }
-                      </>
-                      :
-                      <>
-                        <Reply thingComment={thingReply as Thing<Comment>} />
-                        <hr />
-                      </>
-                  }
-                </div>
-              ))
+              link &&
+              <Row className="mt-3 mb-2 lh-sm px-3">
+                <Post link={link} />
+              </Row>
             }
-          </>
-        }
-      </div>
+            <ReplySort />
+            <hr className="mt-0" />
+            {
+              thingReplies &&
+              <>
+                {
+                  thingReplies.map((thingReply, i) => (
+                    <div key={i}>
+                      {
+                        thingReply.kind === 'more'
+                          ?
+                          <div className="px-2">
+                            {
+                              thingComments.length > 0 &&
+                              thingComments.map((thingComment, i) => (
+                                <div key={i}>
+                                  <Reply thingComment={thingComment as Thing<Comment>} />
+                                  <hr />
+                                </div>
+                              ))
+                            }
+
+                            {
+                              isLoading
+                                ? <small className="text-orange fw-bold px-2">loading...</small>
+                                : (thingReply.data as More).children.length > 0 &&
+                                <small>
+                                  <a onClick={loadMoreComments} style={{ cursor: 'pointer' }}>
+                                    <span className="text-blue fw-bold px-2">load more comments</span> {' '}
+                                    <span className="text-muted fw-normal">({(thingReply.data as More).count} replies)</span>
+                                  </a>
+                                </small>
+                            }
+                          </div>
+                          :
+                          <div>
+                            <div className="px-2">
+                              <Reply thingComment={thingReply as Thing<Comment>} />
+                            </div>
+                            <hr />
+                          </div>
+                      }
+                    </div>
+                  ))
+                }
+              </>
+            }
+          </div>
+        </Col>
+        <Col className="col-auto ps-0">
+          <SubredditSidebar subreddit={thingSubreddit.data} />
+        </Col>
+      </Row>
     </>
   )
 }

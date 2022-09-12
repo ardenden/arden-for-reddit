@@ -8,7 +8,7 @@ export default function ReplySort() {
   const sorts = ['confidence', 'new', 'top']
 
   return (
-    <div className="d-flex align-items-center px-2">
+    <div className="d-flex align-items-center px-3">
       sort: {' '}
       <Nav defaultActiveKey="hot" activeKey={sort as string} className="border-0">
         {

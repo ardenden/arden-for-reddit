@@ -6,6 +6,8 @@ import { Link } from '../../../types/Link'
 import { Listing } from '../../../types/Listing'
 import { Thing } from '../../../types/Thing'
 import { Subreddit } from '../../../types/Subreddit'
+import { Col, Row } from 'react-bootstrap'
+import SubredditSidebar from '../../../components/SubredditSidebar'
 
 type Props = {
   listingLinks: Listing<Thing<Link>>
@@ -16,7 +18,14 @@ const SubredditPage: NextPage<Props> = ({ listingLinks, thingSubreddit }) => {
   return (
     <>
       <SubredditNav thingSubreddit={thingSubreddit} />
-      <SubredditPosts listingLinks={listingLinks} />
+      <Row>
+        <Col className="pe-0">
+          <SubredditPosts listingLinks={listingLinks} />
+        </Col>
+        <Col className="col-auto ps-0">
+          <SubredditSidebar subreddit={thingSubreddit.data} />
+        </Col>
+      </Row>
     </>
   )
 }
