@@ -1,6 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { Container } from 'react-bootstrap'
 import SubredditPosts from '../../../../components/SubredditPosts'
 import SubredditNav from '../../../../components/SubredditNav'
 import { fetchData } from '../../../../services/API'
@@ -18,17 +17,15 @@ const SubredditWherePage: NextPage<Props> = ({ listingThings }) => {
 
   return (
     <>
-      <Container fluid className="my-2">
-        <SubredditNav />
-        {
-          listingThings &&
-            where === 'comments'
-            ? 'comments page'
-            : where === 'wiki'
-              ? 'wiki page'
-              : <SubredditPosts listingLinks={listingThings as Listing<Thing<Link>>} />
-        }
-      </Container>
+      <SubredditNav />
+      {
+        listingThings &&
+          where === 'comments'
+          ? 'comments page'
+          : where === 'wiki'
+            ? 'wiki page'
+            : <SubredditPosts listingLinks={listingThings as Listing<Thing<Link>>} />
+      }
     </>
   )
 }

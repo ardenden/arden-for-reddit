@@ -1,5 +1,4 @@
 import type { GetServerSideProps, NextPage } from 'next'
-import { Container } from 'react-bootstrap'
 import SubredditPosts from '../../../components/SubredditPosts'
 import SubredditNav from '../../../components/SubredditNav'
 import { fetchData } from '../../../services/API'
@@ -14,10 +13,8 @@ type Props = {
 const SubredditPage: NextPage<Props> = ({ listingLinks }) => {
   return (
     <>
-      <Container fluid className="my-2">
-        <SubredditNav />
-        <SubredditPosts listingLinks={listingLinks} />
-      </Container>
+      <SubredditNav />
+      <SubredditPosts listingLinks={listingLinks} />
     </>
   )
 }

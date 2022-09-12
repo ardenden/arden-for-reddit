@@ -8,7 +8,7 @@ export default function ReplySort() {
   const sorts = ['confidence', 'new', 'top']
 
   return (
-    <div className="d-flex align-items-center">
+    <div className="d-flex align-items-center px-2">
       sort: {' '}
       <Nav defaultActiveKey="hot" activeKey={sort as string} className="border-0">
         {
@@ -19,7 +19,7 @@ export default function ReplySort() {
                 passHref>
                 <Nav.Link eventKey={s}
                   className={
-                    `nav-link fw-bold ${sort === s || (!sort && s === 'confidence') ? 'text-orange' : 'text-blue'}`
+                    `nav-link fw-bold ${sort === s || (!sort && s === 'confidence') ? 'text-dark' : 'text-blue'}`
                   }>
                   {s === 'confidence' ? 'best' : s}
                 </Nav.Link>

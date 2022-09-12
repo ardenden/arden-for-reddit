@@ -23,4 +23,5 @@ export interface Subreddit {
   user_is_contributor: boolean
   user_is_moderator: boolean
   user_is_subscriber: boolean
+  icon_img: string
 }

@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next'
 import { useState } from 'react'
-import { Container, Row } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 import Post from '../../../../../../components/Post'
 import Reply from '../../../../../../components/Reply'
 import ReplySort from '../../../../../../components/ReplySort'
@@ -34,19 +34,16 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies }) => {
 
   return (
     <>
-      <Container fluid className="mt-2 mb-3">
-        <SubredditNav />
-
+      <SubredditNav />
+      <div className="px-2 mb-3">
         {
           link &&
-          <Row className="mt-3 mb-2 lh-sm">
+          <Row className="mt-3 mb-2 lh-sm px-2">
             <Post link={link} />
           </Row>
         }
-
         <ReplySort />
         <hr className="mt-0" />
-
         {
           thingReplies &&
           <>
@@ -69,11 +66,11 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies }) => {
 
                         {
                           isLoading
-                            ? <small className="text-orange fw-bold">loading...</small>
+                            ? <small className="text-orange fw-bold px-2">loading...</small>
                             : (thingReply.data as More).children.length > 0 &&
                             <small>
                               <a onClick={loadMoreComments} style={{ cursor: 'pointer' }}>
-                                <span className="text-blue fw-bold">load more comments</span> {' '}
+                                <span className="text-blue fw-bold px-2">load more comments</span> {' '}
                                 <span className="text-muted fw-normal">({(thingReply.data as More).count} replies)</span>
                               </a>
                             </small>
@@ -90,7 +87,7 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies }) => {
             }
           </>
         }
-      </Container>
+      </div>
     </>
   )
 }

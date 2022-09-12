@@ -51,6 +51,11 @@ table {
 
   th,
   td {
-    @extend .px-2
+    @extend .px-2;
   }
+}
+
+.nav-tabs .nav-item .nav-link:not(.active) {
+  @extend .border-0;
+  background-color: $light;
 }

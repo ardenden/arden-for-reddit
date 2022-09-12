@@ -10,7 +10,7 @@ type Props = {
 export default function Navbar({ thingSubreddits }: Props) {
   return (
     <>
-      <BSNavbar bg="light" variant="light" className="px-2">
+      <BSNavbar bg="light" variant="light" className="py-0 px-2 border-bottom border-secondary">
         <Link href="/">
           <a className="navbar-brand">Arden</a>
         </Link>

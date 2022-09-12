@@ -15,11 +15,11 @@ export default function SubredditPosts({ listingLinks }: Props) {
     <>
       {
         listingLinks &&
-        <div className="border-top-0 pt-3 pb-2">
+        <div className="border-top-0 pt-3 pb-2 px-2 mb-2">
           {
             listingLinks.data.children.map((thingLink, i) => (
               <div key={i}>
-                <Row className="lh-sm px-4">
+                <Row className="lh-sm px-2">
                   <Rank i={i} />
                   <Post link={thingLink.data} />
                 </Row>
@@ -28,7 +28,7 @@ export default function SubredditPosts({ listingLinks }: Props) {
             ))
           }
 
-          <div className="px-4">
+          <div className="px-2">
             <Paginate listBefore={listingLinks.data.before} listAfter={listingLinks.data.after} />
           </div>
         </div>

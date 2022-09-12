@@ -35,9 +35,9 @@ export default function Layout({ children }: Props) {
   }, [cookie])
 
   return (
-    <>
+    <div style={{ overflowX: 'hidden' }}>
       <Navbar thingSubreddits={thingSubreddits} />
       <main>{children}</main>
-    </>
+    </div>
   )
 }
