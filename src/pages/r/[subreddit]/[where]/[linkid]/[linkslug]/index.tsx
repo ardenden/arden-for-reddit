@@ -72,9 +72,7 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies }) => {
                             ? <small className="text-orange fw-bold">loading...</small>
                             : (thingReply.data as More).children.length > 0 &&
                             <small>
-                              <a onClick={loadMoreComments}
-                                className="text-decoration-none"
-                                style={{ cursor: 'pointer' }}>
+                              <a onClick={loadMoreComments} style={{ cursor: 'pointer' }}>
                                 <span className="text-blue fw-bold">load more comments</span> {' '}
                                 <span className="text-muted fw-normal">({(thingReply.data as More).count} replies)</span>
                               </a>

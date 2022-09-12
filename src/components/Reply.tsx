@@ -38,7 +38,7 @@ export default function Reply({ thingComment }: Props) {
           </a> {' '}
           <small className={`text-muted ${isCollapsed ? 'fst-italic' : ''}`}>
             <Link href={`/user/${thingComment.data.author}`}>
-              <a className={`text-blue text-decoration-none fw-bold ${isCollapsed ? 'text-muted' : ''}`}>
+              <a className={`text-blue fw-bold ${isCollapsed ? 'text-muted' : ''}`}>
                 {thingComment.data.author}
               </a>
             </Link> {' · '}
@@ -64,14 +64,14 @@ export default function Reply({ thingComment }: Props) {
               <div className="text-muted mt-n1">
                 <small>
                   <Link href={thingComment.data.permalink}>
-                    <a className="text-gray text-decoration-none">permalink</a>
+                    <a className="text-gray">permalink</a>
                   </Link>
                   {
                     thingComment.data.parent_id !== thingComment.data.link_id &&
                     <>
                       {' · '}
                       <Link href={`${router.asPath}/${thingComment.data.parent_id.substring(3)}`}>
-                        <a className="text-gray text-decoration-none">parent</a>
+                        <a className="text-gray">parent</a>
                       </Link>
                     </>
                   }
@@ -106,9 +106,7 @@ export default function Reply({ thingComment }: Props) {
                                 : (thingReply.data as More).children.length > 0 &&
                                 <div className="mt-2">
                                   <small>
-                                    <a onClick={loadMoreComments}
-                                      className="text-decoration-none"
-                                      style={{ cursor: 'pointer' }}>
+                                    <a onClick={loadMoreComments} style={{ cursor: 'pointer' }}>
                                       <span className="text-blue fw-bold">load more comments</span> {' '}
                                       <span className="text-muted fw-normal">
                                         ({(thingReply.data as More).count} replies)

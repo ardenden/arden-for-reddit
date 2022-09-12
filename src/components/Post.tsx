@@ -41,7 +41,7 @@ export default function Post({ link }: Props) {
             {' '}
             <small>
               <NextLink href={link.is_self ? `/r/${link.subreddit}` : `/domain/${link.domain}`}>
-                <a className="text-decoration-none text-muted">({link.domain})</a>
+                <a className="text-muted">({link.domain})</a>
               </NextLink>
             </small>
           </Col>
@@ -50,14 +50,14 @@ export default function Post({ link }: Props) {
           <small className="text-gray">
             {getRelativeTime(link.created)} by {' '}
             <NextLink href={`/user/${link.author}`}>
-              <a className="text-decoration-none text-blue">{link.author}</a>
+              <a className="text-blue">{link.author}</a>
             </NextLink>
             {
               subreddit === 'popular' &&
               <>
                 {' '} to {' '}
                 <NextLink href={link.subreddit}>
-                  <a className="text-decoration-none text-blue">{`r/${link.subreddit}`}</a>
+                  <a className="text-blue">{`r/${link.subreddit}`}</a>
                 </NextLink>
               </>
             }
@@ -66,7 +66,7 @@ export default function Post({ link }: Props) {
         <Row>
           <small>
             <NextLink href={link.permalink}>
-              <a className="text-secondary fw-bold text-decoration-none">{link.num_comments} comments</a>
+              <a className="text-secondary fw-bold">{link.num_comments} comments</a>
             </NextLink>
           </small>
         </Row>

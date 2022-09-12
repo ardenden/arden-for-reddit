@@ -10,7 +10,7 @@ export default function SubredditNav() {
   return (
     <div className="d-flex align-items-center border-bottom fw-bold">
       <Link href={`/r/${subreddit}`}>
-        <a className="text-decoration-none text-dark fs-5 me-2">{subreddit}</a>
+        <a className="text-dark fs-5 me-2">{subreddit}</a>
       </Link>
 
       <Nav variant="tabs" defaultActiveKey="hot" activeKey={where as string} className="border-0">
