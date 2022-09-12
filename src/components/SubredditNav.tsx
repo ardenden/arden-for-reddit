@@ -1,38 +1,17 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { Image, Nav } from 'react-bootstrap'
-import { fetchData, parseCookie } from '../services/API'
-import { Cookie } from '../types/Cookie'
 import { Subreddit } from '../types/Subreddit'
 import { Thing } from '../types/Thing'
 
-export default function SubredditNav() {
+type Props = {
+  thingSubreddit: Thing<Subreddit>
+}
+
+export default function SubredditNav({ thingSubreddit }: Props) {
   const router = useRouter()
   const { subreddit, where } = router.query
-  const [cookie, setCookie] = useState<Cookie>()
-  const [thingSubreddit, setThingSubreddit] = useState<Thing<Subreddit>>()
   const wheres = where === 'comments' ? ['comments'] : ['hot', 'new', 'top', 'wiki']
-
-  async function getThingSubreddit() {
-    const thingSubreddit = await fetchData<Thing<Subreddit>>(
-      `https://oauth.reddit.com/r/${subreddit}/about`,
-      cookie?.access_auth
-    )
-    setThingSubreddit(thingSubreddit)
-  }
-
-  useEffect(() => {
-    if (!cookie) {
-      setCookie(parseCookie())
-    }
-  }, [])
-
-  useEffect(() => {
-    if (cookie) {
-      getThingSubreddit()
-    }
-  }, [cookie])
 
   return (
     <div className="d-flex align-items-end border-bottom border-primary fw-bold gap-2 px-2"

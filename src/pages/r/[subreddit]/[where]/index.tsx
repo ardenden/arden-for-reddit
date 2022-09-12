@@ -6,18 +6,20 @@ import { fetchData } from '../../../../services/API'
 import { Link } from '../../../../types/Link'
 import { Listing } from '../../../../types/Listing'
 import { Thing } from '../../../../types/Thing'
+import { Subreddit } from '../../../../types/Subreddit'
 
 type Props = {
   listingThings: Listing<Thing<Link | Comment>>
+  thingSubreddit: Thing<Subreddit>
 }
 
-const SubredditWherePage: NextPage<Props> = ({ listingThings }) => {
+const SubredditWherePage: NextPage<Props> = ({ listingThings, thingSubreddit }) => {
   const router = useRouter()
   const { where } = router.query
 
   return (
     <>
-      <SubredditNav />
+      <SubredditNav thingSubreddit={thingSubreddit} />
       {
         listingThings &&
           where === 'comments'
@@ -33,12 +35,17 @@ const SubredditWherePage: NextPage<Props> = ({ listingThings }) => {
 export default SubredditWherePage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { subreddit } = context.query
   const request = `https://oauth.reddit.com${context.resolvedUrl}`
   const cookie = context.req.cookies['access_auth']
   context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
   const listingThings = await fetchData<Listing<Thing<Link | Comment>>>(request, cookie)
+  const thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
 
   return {
-    props: { listingThings }
+    props: {
+      listingThings: listingThings,
+      thingSubreddit: thingSubreddit
+    }
   }
 }

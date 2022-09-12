@@ -11,14 +11,16 @@ import { Comment } from '../../../../../../types/Comment'
 import { Link } from '../../../../../../types/Link'
 import { Listing } from '../../../../../../types/Listing'
 import { More } from '../../../../../../types/More'
+import { Subreddit } from '../../../../../../types/Subreddit'
 import { Thing } from '../../../../../../types/Thing'
 
 type Props = {
   link: Link
   thingReplies: Thing<Comment | More>[]
+  thingSubreddit: Thing<Subreddit>
 }
 
-const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies }) => {
+const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit }) => {
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,7 +36,7 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies }) => {
 
   return (
     <>
-      <SubredditNav />
+      <SubredditNav thingSubreddit={thingSubreddit} />
       <div className="px-2 mb-3">
         {
           link &&
@@ -95,15 +97,18 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies }) => {
 export default PostPermalinkPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { subreddit } = context.query
   const request = `https://oauth.reddit.com${context.resolvedUrl}`
   const cookie = context.req.cookies['access_auth']
   context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
   const listings = await fetchData<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(request, cookie)
+  const thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
 
   return {
     props: {
       link: listings[0].data.children[0].data,
-      thingReplies: listings[1].data.children
+      thingReplies: listings[1].data.children,
+      thingSubreddit: thingSubreddit
     }
   }
 }
