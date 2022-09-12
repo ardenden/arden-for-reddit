@@ -59,7 +59,7 @@ export default function Reply({ thingComment }: Props) {
         <Collapse in={!isCollapsed} timeout={50}>
           <div>
             <div>
-              <Container className="mx-0 px-0"
+              <Container className="mx-0 px-0 reply"
                 dangerouslySetInnerHTML={{ __html: renderHtml(thingComment.data.body_html) }} />
               <div className="text-muted mt-n1">
                 <small>

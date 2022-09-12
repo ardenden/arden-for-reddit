@@ -31,11 +31,11 @@ export default function Post({ link }: Props) {
               link.is_self
                 ?
                 <NextLink href={link.permalink}>
-                  <a className="lead fw-normal text-decoration-none"
+                  <a className="lead fw-normal link"
                     dangerouslySetInnerHTML={{ __html: link.title }} />
                 </NextLink>
                 : <a href={link.url}
-                  className="lead fw-normal text-decoration-none"
+                  className="lead fw-normal link"
                   dangerouslySetInnerHTML={{ __html: link.title }} />
             }
             {' '}

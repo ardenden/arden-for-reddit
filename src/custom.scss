@@ -1,0 +1,56 @@
+@import './app.scss';
+
+a {
+  @extend .text-decoration-none;
+
+  &:hover:not(.nav-item .nav-link, .navbar-brand, .link) {
+    @extend .text-decoration-underline;
+  }
+
+  &.link {
+    color: #0000ff;
+  }
+}
+
+.reply {
+  max-width: 60em;
+}
+
+blockquote {
+  @extend .mb-1, .ms-1, .ps-2;
+  color: $secondary;
+  border-left: 2px solid #c5c1ad;
+}
+
+p {
+  @extend .mb-1;
+}
+
+code {
+  @extend .px-1;
+  color: inherit;
+  background-color: $light;
+}
+
+pre {
+  @extend .px-1, .mb-1;
+  background-color: $light;
+
+  code {
+    @extend .px-0;
+  }
+}
+
+ol,
+ul {
+  @extend .mb-0;
+}
+
+table {
+  @extend .table, .table-sm, .table-bordered, .w-auto, .mb-1;
+
+  th,
+  td {
+    @extend .px-2
+  }
+}

@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../app.scss'
+import '../custom.scss'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { SSRProvider } from 'react-bootstrap'
