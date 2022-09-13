@@ -3,6 +3,7 @@ import { Link } from '../types/Link'
 import NextLink from 'next/link'
 import { getRelativeTime } from '../utils/DateUtils'
 import { useRouter } from 'next/router'
+import { formatScore } from '../utils/NumberUtils'
 
 type Props = {
   link: Link
@@ -15,11 +16,7 @@ export default function Post({ link }: Props) {
   return (
     <>
       <Col className="d-flex align-items-center col-auto text-secondary fw-bold" style={{ width: '50px' }}>
-        {
-          new Intl.NumberFormat(undefined, {
-            notation: 'compact'
-          }).format(link.score)
-        }
+        {formatScore(link.score)}
       </Col>
       <Col className="d-flex align-items-center col-auto pe-0">
         <Image src={link.thumbnail} width="75" height="75"></Image>

@@ -7,6 +7,7 @@ import { Comment } from '../types/Comment'
 import { More } from '../types/More'
 import { Thing } from '../types/Thing'
 import { getRelativeTime } from '../utils/DateUtils'
+import { formatScore } from '../utils/NumberUtils'
 import { renderHtml } from '../utils/StringUtils'
 
 type Props = {
@@ -46,9 +47,7 @@ export default function Reply({ thingComment }: Props) {
               {
                 thingComment.data.score_hidden
                   ? '[score hidden]'
-                  : `${new Intl.NumberFormat(undefined, {
-                    notation: 'compact'
-                  }).format(thingComment.data.score)} points`
+                  : `${formatScore(thingComment.data.score)} points`
               }
               {' · '}
               {getRelativeTime(thingComment.data.created)}
