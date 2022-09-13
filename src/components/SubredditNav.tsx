@@ -10,8 +10,15 @@ type Props = {
 
 export default function SubredditNav({ thingSubreddit }: Props) {
   const router = useRouter()
-  const { subreddit, where } = router.query
-  const wheres = where === 'comments' ? ['comments'] : ['hot', 'new', 'top', 'wiki']
+  const { subreddit, where, linkid, linkslug } = router.query
+  const subDefaults = ['hot', 'new', 'rising', 'controversial', 'top']
+  const postDefaults = ['comments', 'duplicates']
+
+  if (subreddit !== 'popular' && subreddit !== 'all') {
+    subDefaults.push('gilded', 'wiki')
+  }
+
+  const wheres = where === 'comments' || where === 'duplicates' ? postDefaults : subDefaults
 
   return (
     <div className="d-flex align-items-end border-bottom border-primary fw-bold gap-2 px-2"
@@ -24,7 +31,7 @@ export default function SubredditNav({ thingSubreddit }: Props) {
           <Image src={thingSubreddit.data.icon_img} height="60" className="me-2" />)
       }
       <Link href={`/r/${subreddit}`}>
-        <a className="text-dark fs-5 me-2">{subreddit}</a>
+        <a className="text-dark fs-5">{subreddit}</a>
       </Link>
 
       <Nav variant="tabs" defaultActiveKey="hot" activeKey={where as string}
@@ -32,13 +39,17 @@ export default function SubredditNav({ thingSubreddit }: Props) {
         {
           wheres.map((w, i) => (
             <Nav.Item key={i}>
-              <Link href={w === 'comments' ? router.asPath : `/r/${subreddit}${w === 'hot' ? '' : `/${w}`}`} passHref>
+              <Link href={
+                w === 'comments' || w === 'duplicates'
+                  ? `/r/${subreddit}/${w}/${linkid}/${linkslug}`
+                  : `/r/${subreddit}${w === 'hot' ? '' : `/${w}`}`
+              } passHref>
                 <Nav.Link eventKey={w}
-                  className={`nav-link fw-bold bg-light ${where === w || (!where && w === 'hot')
+                  className={`nav-link fw-bold py-1 px-2 ${where === w || (!where && w === 'hot')
                     ? 'border-primary border-bottom-0 text-orange bg-white'
                     : 'text-blue'
                     }`}>
-                  {w}
+                  {w === 'duplicates' ? 'other discussions' : w}
                 </Nav.Link>
               </Link>
             </Nav.Item>
