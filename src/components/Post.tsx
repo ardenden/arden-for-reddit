@@ -51,7 +51,7 @@ export default function Post({ link }: Props) {
               <a className="text-blue">{link.author}</a>
             </NextLink>
             {
-              subreddit === 'popular' &&
+              (subreddit === 'popular' || subreddit === 'all') &&
               <>
                 {' '} to {' '}
                 <NextLink href={link.subreddit}>
