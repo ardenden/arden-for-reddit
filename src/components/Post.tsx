@@ -15,7 +15,8 @@ export default function Post({ link }: Props) {
 
   return (
     <>
-      <Col className="d-flex align-items-center col-auto text-secondary fw-bold" style={{ width: '50px' }}>
+      <Col className="d-flex align-items-center col-auto text-secondary fw-bold justify-content-center"
+        style={{ width: '6ch' }}>
         {formatScore(link.score)}
       </Col>
       <Col className="d-flex align-items-center col-auto pe-0">
