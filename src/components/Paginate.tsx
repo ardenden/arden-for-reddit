@@ -24,24 +24,32 @@ export default function Paginate({ listBefore, listAfter }: Props) {
       view more: {' '}
       {
         listBefore &&
+        <Link href={prevUrl}>
+          <a>
+            <Button variant="outline-light" size="sm" className="text-primary fw-bold bg-light">
+              &lt; prev
+            </Button>
+          </a>
+        </Link>
+      }
+
+      {
+        (listBefore && listAfter) &&
         <>
-          <Link href={prevUrl}>
-            <a>
-              <Button variant="outline-light" size="sm" className="text-primary fw-bold bg-light">
-                &lt; prev
-              </Button>
-            </a>
-          </Link>
           {' '} <span className="text-muted fw-light">|</span> {' '}
         </>
       }
-      <Link href={nextUrl}>
-        <a>
-          <Button variant="outline-light" size="sm" className="text-primary fw-bold bg-light">
-            next &gt;
-          </Button>
-        </a>
-      </Link>
+
+      {
+        listAfter &&
+        <Link href={nextUrl}>
+          <a>
+            <Button variant="outline-light" size="sm" className="text-primary fw-bold bg-light">
+              next &gt;
+            </Button>
+          </a>
+        </Link>
+      }
     </>
   )
 }
