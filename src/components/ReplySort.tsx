@@ -5,7 +5,7 @@ import { Nav } from 'react-bootstrap'
 export default function ReplySort() {
   const router = useRouter()
   const { sort } = router.query
-  const sorts = ['confidence', 'new', 'top']
+  const sorts = ['confidence', 'new', 'controversial', 'top', 'old', 'qa']
 
   return (
     <div className="d-flex align-items-center px-3">
@@ -19,9 +19,11 @@ export default function ReplySort() {
                 passHref>
                 <Nav.Link eventKey={s}
                   className={
-                    `nav-link fw-bold ${sort === s || (!sort && s === 'confidence') ? 'text-dark' : 'text-blue'}`
+                    `nav-link fw-bold ${sort === s || (!sort && s === 'confidence')
+                      ? 'text-gray text-decoration-underline'
+                      : 'text-blue'}`
                   }>
-                  {s === 'confidence' ? 'best' : s}
+                  {s === 'confidence' ? 'best' : s === 'qa' ? 'q&a' : s}
                 </Nav.Link>
               </Link>
             </Nav.Item>
