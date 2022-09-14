@@ -10,7 +10,7 @@ export default function ReplySort() {
   return (
     <div className="d-flex align-items-center px-3">
       sort: {' '}
-      <Nav defaultActiveKey="hot" activeKey={sort as string} className="border-0">
+      <Nav defaultActiveKey="hot" activeKey={sort as string}>
         {
           sorts.map((s, i) => (
             <Nav.Item key={i}>
