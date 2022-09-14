@@ -1,7 +1,7 @@
-export function getRelativeTime(linkTimestamp: number): string {
+export function getRelativeTime(timestamp: number): string {
   const date = new Date()
   const currentTimestamp = Math.floor(date.getTime() / 1000)
-  const difference = currentTimestamp - linkTimestamp
+  const difference = currentTimestamp - timestamp
   let output = ''
 
   if (difference < 60) {
@@ -17,6 +17,17 @@ export function getRelativeTime(linkTimestamp: number): string {
   } else {
     output = `${Math.floor(difference / 31449600)} years ago`
   }
+
+  return output
+}
+
+export function getShortDate(timestamp: number): string {
+  const date = new Date(timestamp * 1000)
+  const output = date.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  })
 
   return output
 }
