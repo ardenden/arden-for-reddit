@@ -38,12 +38,22 @@ export default function Reply({ thingComment }: Props) {
             {isCollapsed ? '[+]' : '[–]'}
           </a> {' '}
           <small className={`text-muted ${isCollapsed ? 'fst-italic' : ''}`}>
-            <Link href={`/user/${thingComment.data.author}`}>
-              <a className={`text-blue fw-bold ${isCollapsed ? 'text-muted' : ''}`}>
-                {thingComment.data.author}
-              </a>
-            </Link> {' · '}
-            <small>
+            {
+              thingComment.data.author === '[deleted]'
+                ?
+                <span className="text-muted">
+                  {thingComment.data.author} {' '}
+                </span>
+                :
+                <>
+                  <Link href={`/user/${thingComment.data.author}`}>
+                    <a className={`text-blue fw-bold ${isCollapsed ? 'text-muted' : ''}`}>
+                      {thingComment.data.author}
+                    </a>
+                  </Link> {' '}
+                </>
+            }
+            <small className="ms-1">
               {
                 thingComment.data.score_hidden
                   ? '[score hidden]'
