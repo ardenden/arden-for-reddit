@@ -12,6 +12,7 @@ import { Comment } from '../../../../../../types/Comment'
 import { Link } from '../../../../../../types/Link'
 import { Listing } from '../../../../../../types/Listing'
 import { More } from '../../../../../../types/More'
+import { Sidebar } from '../../../../../../types/Sidebar'
 import { Subreddit } from '../../../../../../types/Subreddit'
 import { Thing } from '../../../../../../types/Thing'
 
@@ -19,9 +20,10 @@ type Props = {
   link: Link
   thingReplies: Thing<Comment | More>[]
   thingSubreddit: Thing<Subreddit>
+  sidebar: Sidebar
 }
 
-const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit }) => {
+const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit, sidebar }) => {
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -97,7 +99,7 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit
           </div>
         </Col>
         <Col className="col-auto ps-0">
-          <SubredditSidebar subreddit={thingSubreddit.data} />
+          <SubredditSidebar subreddit={thingSubreddit.data} sidebar={sidebar} />
         </Col>
       </Row>
     </>
@@ -112,13 +114,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = context.req.cookies['access_auth']
   context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
   const listings = await fetchData<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(request, cookie)
-  const thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
+  let thingSubreddit: Thing<Subreddit> | undefined = undefined
+  let sidebar: Sidebar | undefined = undefined
+  thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
+  sidebar = await fetchData<Sidebar>(`https://oauth.reddit.com/r/${subreddit}/api/widgets`, cookie)
 
   return {
     props: {
       link: listings[0].data.children[0].data,
       thingReplies: listings[1].data.children,
-      thingSubreddit: thingSubreddit
+      thingSubreddit: thingSubreddit,
+      sidebar: sidebar
     }
   }
 }

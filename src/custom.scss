@@ -59,3 +59,28 @@ table {
   @extend .border-0;
   background-color: #eff7ff;
 }
+
+.card {
+  .card-body {
+    .sidebar-extra div table {
+      @extend .table, .table-sm, .mb-0, .w-100;
+
+      tr {
+        @extend .border-top-0;
+
+        :first-child,
+        :last-child {
+          @extend .border-start-0, .border-end-0;
+        }
+      }
+    }
+
+    .sidebar-extra div:has(table) {
+      @extend .table-responsive;
+    }
+
+    &:has(.sidebar-extra):has(div):has(table) {
+      @extend .p-0;
+    }
+  }
+}

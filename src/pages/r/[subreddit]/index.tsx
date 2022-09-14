@@ -8,13 +8,15 @@ import { Thing } from '../../../types/Thing'
 import { Subreddit } from '../../../types/Subreddit'
 import { Col, Row } from 'react-bootstrap'
 import SubredditSidebar from '../../../components/SubredditSidebar'
+import { Sidebar } from '../../../types/Sidebar'
 
 type Props = {
   listingLinks: Listing<Thing<Link>>
   thingSubreddit: Thing<Subreddit>
+  sidebar: Sidebar
 }
 
-const SubredditPage: NextPage<Props> = ({ listingLinks, thingSubreddit }) => {
+const SubredditPage: NextPage<Props> = ({ listingLinks, thingSubreddit, sidebar }) => {
   return (
     <>
       <SubredditNav thingSubreddit={thingSubreddit} />
@@ -23,7 +25,7 @@ const SubredditPage: NextPage<Props> = ({ listingLinks, thingSubreddit }) => {
           <SubredditPosts listingLinks={listingLinks} />
         </Col>
         <Col className="col-auto ps-0">
-          <SubredditSidebar subreddit={thingSubreddit.data} />
+          <SubredditSidebar subreddit={thingSubreddit.data} sidebar={sidebar} />
         </Col>
       </Row>
     </>
@@ -38,12 +40,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = context.req.cookies['access_auth']
   context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
   const listingLinks = await fetchData<Listing<Thing<Link>>>(request, cookie)
-  const thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
+  let thingSubreddit: Thing<Subreddit> | undefined = undefined
+  let sidebar: Sidebar | undefined = undefined
+  thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
+  sidebar = await fetchData<Sidebar>(`https://oauth.reddit.com/r/${subreddit}/api/widgets`, cookie)
 
   return {
     props: {
       listingLinks: listingLinks,
-      thingSubreddit: thingSubreddit
+      thingSubreddit: thingSubreddit,
+      sidebar: sidebar
     }
   }
 }
