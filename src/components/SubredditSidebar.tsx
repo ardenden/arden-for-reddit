@@ -3,7 +3,6 @@ import { Accordion, Card, ListGroup } from 'react-bootstrap'
 import { Community, Extra, Info, Rule, Sidebar } from '../types/Sidebar'
 import { Subreddit } from '../types/Subreddit'
 import { getShortDate } from '../utils/DateUtils'
-import { renderHtml } from '../utils/StringUtils'
 
 type Props = {
   subreddit: Subreddit
@@ -70,7 +69,7 @@ export default function SubredditSidebar({ subreddit, sidebar }: Props) {
                       rule.data.map((r, i) => (
                         <Accordion.Item key={i} eventKey={i.toString()}>
                           <Accordion.Button className="p-2">{r.priority + 1}. {r.shortName}</Accordion.Button>
-                          <Accordion.Body dangerouslySetInnerHTML={{ __html: renderHtml(r.descriptionHtml) }} />
+                          <Accordion.Body dangerouslySetInnerHTML={{ __html: r.descriptionHtml }} />
                         </Accordion.Item>
                       ))
                     }
@@ -85,7 +84,7 @@ export default function SubredditSidebar({ subreddit, sidebar }: Props) {
                 <Card key={i}>
                   <Card.Header>{e.shortName}</Card.Header>
                   <Card.Body>
-                    <Card.Text dangerouslySetInnerHTML={{ __html: renderHtml(e.textHtml) }} className="sidebar-extra" />
+                    <Card.Text dangerouslySetInnerHTML={{ __html: e.textHtml }} className="sidebar-extra" />
                   </Card.Body>
                 </Card>
               ))
@@ -93,15 +92,15 @@ export default function SubredditSidebar({ subreddit, sidebar }: Props) {
 
             {
               communites.length > 0 &&
-              communites.map((c) => (
+              communites.map((c, i) => (
                 c &&
-                <Card>
+                <Card key={i}>
                   <Card.Header>{c.shortName}</Card.Header>
                   <Card.Body className="p-0">
                     <ListGroup variant="flush">
                       {
-                        c.data.map((d, i) => (
-                          <ListGroup.Item key={i}>
+                        c.data.map((d, j) => (
+                          <ListGroup.Item key={j}>
                             <Link href={`/r/${d.name}`}>
                               <a>r/{d.name}</a>
                             </Link>

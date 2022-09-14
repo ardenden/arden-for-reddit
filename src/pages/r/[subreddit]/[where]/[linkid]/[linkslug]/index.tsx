@@ -117,7 +117,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let thingSubreddit: Thing<Subreddit> | undefined = undefined
   let sidebar: Sidebar | undefined = undefined
   thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
-  sidebar = await fetchData<Sidebar>(`https://oauth.reddit.com/r/${subreddit}/api/widgets`, cookie)
+  sidebar = await fetchData<Sidebar>(`https://oauth.reddit.com/r/${subreddit}/api/widgets?raw_json=1`, cookie)
 
   return {
     props: {
