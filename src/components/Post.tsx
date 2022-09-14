@@ -47,9 +47,14 @@ export default function Post({ link }: Props) {
         <Row>
           <small className="text-gray">
             {getRelativeTime(link.created)} by {' '}
-            <NextLink href={`/user/${link.author}`}>
-              <a className="text-blue">{link.author}</a>
-            </NextLink>
+            {
+              link.author === '[deleted]'
+                ? <span className="text-muted">{link.author}</span>
+                :
+                <NextLink href={`/user/${link.author}`}>
+                  <a className="text-blue">{link.author}</a>
+                </NextLink>
+            }
             {
               (subreddit === 'popular' || subreddit === 'all') &&
               <>
