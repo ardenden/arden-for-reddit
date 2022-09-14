@@ -30,7 +30,7 @@ export async function getMoreComments(thingReply: Thing<Comment | More>) {
       }
     }
   }>(
-    `https://oauth.reddit.com/api/morechildren?link_id=${linkId}&children=${children}&api_type=json`,
+    `https://oauth.reddit.com/api/morechildren?link_id=${linkId}&children=${children}&api_type=json&raw_json=1`,
     cookie?.access_auth
   )
   const thingReplies = <Thing<Comment | More>[]>JSON.parse(JSON.stringify(moreReplies.json.data.things))

@@ -8,7 +8,6 @@ import { More } from '../types/More'
 import { Thing } from '../types/Thing'
 import { getRelativeTime } from '../utils/DateUtils'
 import { formatScore } from '../utils/NumberUtils'
-import { renderHtml } from '../utils/StringUtils'
 
 type Props = {
   thingComment: Thing<Comment>
@@ -69,7 +68,7 @@ export default function Reply({ thingComment }: Props) {
           <div>
             <div>
               <Container className="mx-0 px-0 reply"
-                dangerouslySetInnerHTML={{ __html: renderHtml(thingComment.data.body_html) }} />
+                dangerouslySetInnerHTML={{ __html: thingComment.data.body_html }} />
               <div className="text-muted mt-n1">
                 <small>
                   <Link href={thingComment.data.permalink}>

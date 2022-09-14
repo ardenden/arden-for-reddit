@@ -110,7 +110,7 @@ export default PostPermalinkPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { subreddit } = context.query
-  const request = `https://oauth.reddit.com${context.resolvedUrl}`
+  const request = `https://oauth.reddit.com${context.resolvedUrl}?raw_json=1`
   const cookie = context.req.cookies['access_auth']
   context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
   const listings = await fetchData<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(request, cookie)
