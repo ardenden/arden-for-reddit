@@ -9,15 +9,16 @@ type Props = {
 
 export default function Paginate({ listBefore, listAfter }: Props) {
   const router = useRouter()
-  const { subreddit, limit, count, before, after, where } = router.query
+  const { subreddit, limit, count, before, after, where, t } = router.query
   const limitInt = parseInt(limit as string, 10)
   const countInt = parseInt(count as string, 10)
   const prevCount = (count ? countInt : 0) + (after ? 1 : (limit ? -limitInt : -25))
   const nextCount = (count ? countInt : 0) + (before ? -1 : (limit ? limitInt : 25))
   const whereParam = where ? `/${where}` : ''
+  const tParam = t ? `t=${t}&` : ''
   const limitParam = limit ? `limit=${limit}&` : ''
-  const prevUrl = `/r/${subreddit}${whereParam}?${limitParam}count=${prevCount}&before=${listBefore}`
-  const nextUrl = `/r/${subreddit}${whereParam}?${limitParam}count=${nextCount}&after=${listAfter}`
+  const prevUrl = `/r/${subreddit}${whereParam}?${tParam}${limitParam}count=${prevCount}&before=${listBefore}`
+  const nextUrl = `/r/${subreddit}${whereParam}?${tParam}${limitParam}count=${nextCount}&after=${listAfter}`
 
   return (
     <>
