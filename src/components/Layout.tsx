@@ -5,6 +5,7 @@ import { Listing } from '../types/Listing'
 import { Subreddit } from '../types/Subreddit'
 import { Thing } from '../types/Thing'
 import Navbar from './Navbar'
+import useSWRImmutable from 'swr/immutable'
 
 type Props = {
   children: ReactNode
@@ -12,15 +13,10 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const [cookie, setCookie] = useState<Cookie>()
-  const [thingSubreddits, setThingSubreddits] = useState<Thing<Subreddit>[]>()
-
-  async function getSubreddits() {
-    const subreddits = await fetchData<Listing<Thing<Subreddit>>>(
-      'https://oauth.reddit.com/subreddits/default',
-      cookie?.access_auth
-    )
-    setThingSubreddits(subreddits.data.children)
-  }
+  const { data: listingSubreddits } = useSWRImmutable<Listing<Thing<Subreddit>>>(
+    cookie ? ['https://oauth.reddit.com/subreddits/default', cookie?.access_auth] : null,
+    fetchData
+  )
 
   useEffect(() => {
     if (!cookie) {
@@ -28,15 +24,9 @@ export default function Layout({ children }: Props) {
     }
   }, [])
 
-  useEffect(() => {
-    if (cookie) {
-      getSubreddits()
-    }
-  }, [cookie])
-
   return (
     <div style={{ overflowX: 'hidden' }}>
-      <Navbar thingSubreddits={thingSubreddits} />
+      <Navbar thingSubreddits={listingSubreddits?.data.children} />
       <main>{children}</main>
     </div>
   )

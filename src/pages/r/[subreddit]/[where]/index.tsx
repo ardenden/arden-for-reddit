@@ -1,27 +1,31 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import SubredditPosts from '../../../../components/SubredditPosts'
 import SubredditNav from '../../../../components/SubredditNav'
-import { fetchData } from '../../../../services/API'
+import { useSubredditPage, parseCookie } from '../../../../services/API'
 import { Link } from '../../../../types/Link'
 import { Listing } from '../../../../types/Listing'
 import { Thing } from '../../../../types/Thing'
-import { Subreddit } from '../../../../types/Subreddit'
 import { Col, Nav, Row } from 'react-bootstrap'
 import SubredditSidebar from '../../../../components/SubredditSidebar'
 import NextLink from 'next/link'
-import { Sidebar } from '../../../../types/Sidebar'
+import { useEffect, useState } from 'react'
+import { Cookie } from '../../../../types/Cookie'
 
-type Props = {
-  listingThings: Listing<Thing<Link | Comment>>
-  thingSubreddit: Thing<Subreddit>
-  sidebar: Sidebar
-}
-
-const SubredditWherePage: NextPage<Props> = ({ listingThings, thingSubreddit, sidebar }) => {
+const SubredditWherePage: NextPage = () => {
   const router = useRouter()
   const { subreddit, where, t } = router.query
   const sorts = ['hour', 'day', 'week', 'month', 'year', 'all']
+  const [cookie, setCookie] = useState<Cookie>()
+  const { listings } = useSubredditPage(router, cookie)
+  const { thingSubreddit } = useSubredditPage(router, cookie)
+  const { sidebar } = useSubredditPage(router, cookie)
+
+  useEffect(() => {
+    if (!cookie) {
+      setCookie(parseCookie())
+    }
+  }, [])
 
   return (
     <>
@@ -29,7 +33,7 @@ const SubredditWherePage: NextPage<Props> = ({ listingThings, thingSubreddit, si
       <Row>
         <Col className="pe-0">
           {
-            listingThings &&
+            listings &&
               where === 'comments'
               ? 'comments page'
               : where === 'wiki'
@@ -68,12 +72,12 @@ const SubredditWherePage: NextPage<Props> = ({ listingThings, thingSubreddit, si
                       <hr className="my-0" />
                     </>
                   }
-                  <SubredditPosts listingLinks={listingThings as Listing<Thing<Link>>} />
+                  <SubredditPosts listingLinks={listings as Listing<Thing<Link>>} />
                 </>
           }
         </Col>
         <Col className="col-auto ps-0">
-          <SubredditSidebar subreddit={thingSubreddit.data} sidebar={sidebar} />
+          <SubredditSidebar subreddit={thingSubreddit?.data} sidebar={sidebar} />
         </Col>
       </Row>
     </>
@@ -81,22 +85,3 @@ const SubredditWherePage: NextPage<Props> = ({ listingThings, thingSubreddit, si
 }
 
 export default SubredditWherePage
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { subreddit } = context.query
-  const request = `https://oauth.reddit.com${context.resolvedUrl}`
-  const cookie = context.req.cookies['access_auth']
-  context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
-  const listingThings = await fetchData<Listing<Thing<Link | Comment>>>(request, cookie)
-  let thingSubreddit: Thing<Subreddit> | undefined = undefined
-  let sidebar: Sidebar | undefined = undefined
-  thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
-  sidebar = await fetchData<Sidebar>(`https://oauth.reddit.com/r/${subreddit}/api/widgets?raw_json=1`, cookie)
-  return {
-    props: {
-      listingThings: listingThings,
-      thingSubreddit: thingSubreddit,
-      sidebar: sidebar
-    }
-  }
-}

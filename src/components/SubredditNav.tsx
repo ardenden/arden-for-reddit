@@ -5,7 +5,7 @@ import { Subreddit } from '../types/Subreddit'
 import { Thing } from '../types/Thing'
 
 type Props = {
-  thingSubreddit: Thing<Subreddit>
+  thingSubreddit?: Thing<Subreddit>
 }
 
 export default function SubredditNav({ thingSubreddit }: Props) {

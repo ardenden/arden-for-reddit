@@ -7,7 +7,7 @@ import Post from './Post'
 import Rank from './Rank'
 
 type Props = {
-  listingLinks: Listing<Thing<Link>>
+  listingLinks?: Listing<Thing<Link>>
 }
 
 export default function SubredditPosts({ listingLinks }: Props) {
