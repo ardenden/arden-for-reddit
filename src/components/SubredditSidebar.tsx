@@ -1,19 +1,27 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { Accordion, Card, ListGroup } from 'react-bootstrap'
-import { Community, Extra, Info, Rule, Sidebar } from '../types/Sidebar'
-import { Subreddit } from '../types/Subreddit'
+import { parseCookie, useSubredditAbout, useSubredditWidget } from '../services/API'
+import { Cookie } from '../types/Cookie'
+import { Community, Extra, Info, Rule } from '../types/Sidebar'
 import { getShortDate } from '../utils/DateUtils'
 
-type Props = {
-  subreddit?: Subreddit
-  sidebar?: Sidebar
-}
-
-export default function SubredditSidebar({ subreddit, sidebar }: Props) {
+export default function SubredditSidebar() {
+  const router = useRouter()
+  const [cookie, setCookie] = useState<Cookie>()
   let info: Info | null = null
   let rule: Rule | null = null
   const communites: Community[] = []
   const extras: Extra[] = []
+  const { thingSubreddit } = useSubredditAbout(router, cookie)
+  const { sidebar } = useSubredditWidget(router, cookie)
+
+  useEffect(() => {
+    if (!cookie) {
+      setCookie(parseCookie())
+    }
+  }, [])
 
   if (sidebar) {
     for (const key in sidebar.items) {
@@ -41,7 +49,7 @@ export default function SubredditSidebar({ subreddit, sidebar }: Props) {
   return (
     <>
       {
-        subreddit &&
+        thingSubreddit?.data &&
         <div className="px-3 py-2 border-start border-secondary">
           <div className="d-flex flex-column gap-3" style={{ width: '350px' }}>
             {
@@ -54,7 +62,7 @@ export default function SubredditSidebar({ subreddit, sidebar }: Props) {
                   <Card.Text className="font-monospace">{info.subscribersCount.toLocaleString()} members</Card.Text>
                   <Card.Text className="font-monospace">{info.currentlyViewingCount.toLocaleString()} online</Card.Text>
                   <hr className="mt-2 mb-1" />
-                  <Card.Text>Created {getShortDate(subreddit.created)}</Card.Text>
+                  <Card.Text>Created {getShortDate(thingSubreddit?.data.created)}</Card.Text>
                 </Card.Body>
               </Card>
             }
@@ -62,7 +70,7 @@ export default function SubredditSidebar({ subreddit, sidebar }: Props) {
             {
               rule &&
               <Card>
-                <Card.Header>r/{subreddit.display_name} Rules</Card.Header>
+                <Card.Header>r/{thingSubreddit?.data.display_name} Rules</Card.Header>
                 <Card.Body className="p-0">
                   <Accordion flush alwaysOpen>
                     {

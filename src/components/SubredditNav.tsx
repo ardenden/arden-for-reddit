@@ -1,18 +1,23 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { Image, Nav } from 'react-bootstrap'
-import { Subreddit } from '../types/Subreddit'
-import { Thing } from '../types/Thing'
+import { parseCookie, useSubredditAbout } from '../services/API'
+import { Cookie } from '../types/Cookie'
 
-type Props = {
-  thingSubreddit?: Thing<Subreddit>
-}
-
-export default function SubredditNav({ thingSubreddit }: Props) {
+export default function SubredditNav() {
   const router = useRouter()
+  const [cookie, setCookie] = useState<Cookie>()
   const { subreddit, where, linkid, linkslug } = router.query
   const subDefaults = ['hot', 'new', 'rising', 'controversial', 'top']
   const postDefaults = ['comments', 'duplicates']
+  const { thingSubreddit } = useSubredditAbout(router, cookie)
+
+  useEffect(() => {
+    if (!cookie) {
+      setCookie(parseCookie())
+    }
+  }, [])
 
   if (subreddit !== 'popular' && subreddit !== 'all') {
     subDefaults.push('gilded', 'wiki')
@@ -30,6 +35,7 @@ export default function SubredditNav({ thingSubreddit }: Props) {
           : thingSubreddit.data.icon_img &&
           <Image src={thingSubreddit.data.icon_img} height="60" className="me-2" />)
       }
+
       <Link href={`/r/${subreddit}`}>
         <a className="text-dark fs-5">{subreddit}</a>
       </Link>
