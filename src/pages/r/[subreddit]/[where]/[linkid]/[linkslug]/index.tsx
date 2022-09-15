@@ -6,7 +6,7 @@ import Reply from '../../../../../../components/Reply'
 import ReplySort from '../../../../../../components/ReplySort'
 import SubredditNav from '../../../../../../components/SubredditNav'
 import SubredditSidebar from '../../../../../../components/SubredditSidebar'
-import { getSubredditAbout, parseCookie } from '../../../../../../services/API'
+import { useSubredditPage, parseCookie } from '../../../../../../services/API'
 import { getMoreComments } from '../../../../../../services/Comments'
 import { Comment } from '../../../../../../types/Comment'
 import { Link } from '../../../../../../types/Link'
@@ -23,9 +23,9 @@ const PostPermalinkPage: NextPage = () => {
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [cookie, setCookie] = useState<Cookie>()
-  const { listings } = getSubredditAbout(router, cookie)
-  const { thingSubreddit } = getSubredditAbout(router, cookie)
-  const { sidebar } = getSubredditAbout(router, cookie)
+  const { listings } = useSubredditPage(router, cookie)
+  const { thingSubreddit } = useSubredditPage(router, cookie)
+  const { sidebar } = useSubredditPage(router, cookie)
 
   useEffect(() => {
     if (!cookie) {

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import SubredditPosts from '../../../components/SubredditPosts'
 import SubredditNav from '../../../components/SubredditNav'
-import { getSubredditAbout, parseCookie } from '../../../services/API'
+import { useSubredditPage, parseCookie } from '../../../services/API'
 import { Link } from '../../../types/Link'
 import { Listing } from '../../../types/Listing'
 import { Thing } from '../../../types/Thing'
@@ -14,9 +14,9 @@ import { useRouter } from 'next/router'
 const SubredditPage: NextPage = () => {
   const router = useRouter()
   const [cookie, setCookie] = useState<Cookie>()
-  const { listings } = getSubredditAbout(router, cookie)
-  const { thingSubreddit } = getSubredditAbout(router, cookie)
-  const { sidebar } = getSubredditAbout(router, cookie)
+  const { listings } = useSubredditPage(router, cookie)
+  const { thingSubreddit } = useSubredditPage(router, cookie)
+  const { sidebar } = useSubredditPage(router, cookie)
 
   useEffect(() => {
     if (!cookie) {

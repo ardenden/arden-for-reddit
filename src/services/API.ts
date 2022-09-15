@@ -46,7 +46,7 @@ export async function fetchData<T>(request: RequestInfo, accessAuthString?: stri
   return data
 }
 
-export function getSubredditAbout(router: NextRouter, cookie?: Cookie) {
+export function useSubredditPage(router: NextRouter, cookie?: Cookie) {
   const { subreddit, where, sort } = router?.query
   let listingUrl = `https://oauth.reddit.com${router.asPath}`
   const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
