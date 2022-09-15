@@ -21,7 +21,7 @@ export default function Reply({ thingComment }: Props) {
 
   async function loadMoreComments() {
     setIsLoading(true)
-    const thingMoreRef = thingComment.data.replies.data.children.find((comment) => comment.kind === 'more') as Thing<More>
+    const thingMoreRef = thingComment.data.replies.data.children.find((tr) => tr.kind === 'more') as Thing<More>
     const moreReplies = await getMoreComments(thingComment)
     thingMoreRef.data.count = moreReplies.count
     thingMoreRef.data.children = moreReplies.children

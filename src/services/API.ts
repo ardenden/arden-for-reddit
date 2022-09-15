@@ -46,36 +46,65 @@ export async function fetchData<T>(request: RequestInfo, accessAuthString?: stri
   return data
 }
 
-export function useSubredditPage(router: NextRouter, cookie?: Cookie) {
-  const { subreddit, where, sort } = router?.query
-  let listingUrl = `https://oauth.reddit.com${router.asPath}`
-  const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
-
-  if (where === 'comments') {
-    if (sort) {
-      listingUrl = `${listingUrl}&raw_json=1`
-    } else {
-      listingUrl = `${listingUrl}?raw_json=1`
-    }
-  }
-
-  const { data: listings } = useSWR<Listing<Thing<Link>> | [Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(
-    (subreddit && cookie) ? [listingUrl, cookie?.access_auth] : null,
-    fetchData
-  )
-  const { data: thingSubreddit } = useSWRImmutable<Thing<Subreddit>>(
-    (subreddit && isSubPage && cookie) ? [`https://oauth.reddit.com/r/${subreddit}/about?raw_json=1`, cookie.access_auth] : null,
-    fetchData
-  )
-  const { data: sidebar } = useSWR<Sidebar>(
-    (subreddit && isSubPage && cookie) ? [`https://oauth.reddit.com/r/${subreddit}/api/widgets?raw_json=1`, cookie.access_auth] : null,
+export function useListingLinks(router: NextRouter, cookie?: Cookie) {
+  const { subreddit } = router.query
+  const { data } = useSWR<Listing<Thing<Link>>>(
+    (subreddit && cookie) ? [`https://oauth.reddit.com${router.asPath}`, cookie?.access_auth] : null,
     fetchData
   )
 
   return {
-    listings: listings,
-    thingSubreddit: thingSubreddit,
-    sidebar: sidebar
+    listingLinks: data
+  }
+}
+
+export function usePermaLink(router: NextRouter, cookie?: Cookie) {
+  const { subreddit, sort } = router.query
+  let url = `https://oauth.reddit.com${router.asPath}`
+
+  if (sort) {
+    url = `${url}&raw_json=1`
+  } else {
+    url = `${url}?raw_json=1`
+  }
+
+  const { data } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(
+    (subreddit && cookie) ? [url, cookie?.access_auth] : null,
+    fetchData
+  )
+
+  return {
+    listings: data
+  }
+}
+
+export function useSubredditAbout(router: NextRouter, cookie?: Cookie) {
+  const { subreddit } = router.query
+  const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
+  const { data } = useSWRImmutable<Thing<Subreddit>>(
+    (subreddit && isSubPage && cookie)
+      ? [`https://oauth.reddit.com/r/${subreddit}/about?raw_json=1`, cookie.access_auth]
+      : null,
+    fetchData
+  )
+
+  return {
+    thingSubreddit: data
+  }
+}
+
+export function useSubredditWidget(router: NextRouter, cookie?: Cookie) {
+  const { subreddit } = router.query
+  const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
+  const { data } = useSWRImmutable<Sidebar>(
+    (subreddit && isSubPage && cookie)
+      ? [`https://oauth.reddit.com/r/${subreddit}/api/widgets?raw_json=1`, cookie.access_auth]
+      : null,
+    fetchData
+  )
+
+  return {
+    sidebar: data
   }
 }
 

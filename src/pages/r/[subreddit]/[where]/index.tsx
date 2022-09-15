@@ -2,39 +2,23 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import SubredditPosts from '../../../../components/SubredditPosts'
 import SubredditNav from '../../../../components/SubredditNav'
-import { useSubredditPage, parseCookie } from '../../../../services/API'
-import { Link } from '../../../../types/Link'
-import { Listing } from '../../../../types/Listing'
-import { Thing } from '../../../../types/Thing'
 import { Col, Nav, Row } from 'react-bootstrap'
 import SubredditSidebar from '../../../../components/SubredditSidebar'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
-import { Cookie } from '../../../../types/Cookie'
 
 const SubredditWherePage: NextPage = () => {
   const router = useRouter()
   const { subreddit, where, t } = router.query
   const sorts = ['hour', 'day', 'week', 'month', 'year', 'all']
-  const [cookie, setCookie] = useState<Cookie>()
-  const { listings } = useSubredditPage(router, cookie)
-  const { thingSubreddit } = useSubredditPage(router, cookie)
-  const { sidebar } = useSubredditPage(router, cookie)
-
-  useEffect(() => {
-    if (!cookie) {
-      setCookie(parseCookie())
-    }
-  }, [])
 
   return (
     <>
-      <SubredditNav thingSubreddit={thingSubreddit} />
+      <SubredditNav />
+
       <Row>
         <Col className="pe-0">
           {
-            listings &&
-              where === 'comments'
+            where === 'comments'
               ? 'comments page'
               : where === 'wiki'
                 ? 'wiki page'
@@ -72,12 +56,12 @@ const SubredditWherePage: NextPage = () => {
                       <hr className="my-0" />
                     </>
                   }
-                  <SubredditPosts listingLinks={listings as Listing<Thing<Link>>} />
+                  <SubredditPosts />
                 </>
           }
         </Col>
         <Col className="col-auto ps-0">
-          <SubredditSidebar subreddit={thingSubreddit?.data} sidebar={sidebar} />
+          <SubredditSidebar />
         </Col>
       </Row>
     </>

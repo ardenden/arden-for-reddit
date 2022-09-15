@@ -1,16 +1,25 @@
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
-import { Link } from '../types/Link'
-import { Listing } from '../types/Listing'
-import { Thing } from '../types/Thing'
+import { parseCookie, useListingLinks } from '../services/API'
+import { Cookie } from '../types/Cookie'
 import Paginate from './Paginate'
 import Post from './Post'
 import Rank from './Rank'
 
-type Props = {
-  listingLinks?: Listing<Thing<Link>>
-}
+export default function SubredditPosts() {
+  const router = useRouter()
+  const [cookie, setCookie] = useState<Cookie>()
+  const { listingLinks } = useListingLinks(router, cookie)
 
-export default function SubredditPosts({ listingLinks }: Props) {
+  useEffect(() => {
+    if (!cookie) {
+      setCookie(parseCookie())
+    }
+  }, [])
+
+  if (!listingLinks) return <div className="mx-2 lead fw-bold text-orange">loading...</div>
+
   return (
     <>
       {
@@ -27,7 +36,6 @@ export default function SubredditPosts({ listingLinks }: Props) {
               </div>
             ))
           }
-
           <div className="px-3">
             <Paginate listBefore={listingLinks.data.before} listAfter={listingLinks.data.after} />
           </div>
