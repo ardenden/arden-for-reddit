@@ -1,35 +1,42 @@
-import { GetServerSideProps, NextPage } from 'next'
-import { useState } from 'react'
+import { NextPage } from 'next'
+import { useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import Post from '../../../../../../components/Post'
 import Reply from '../../../../../../components/Reply'
 import ReplySort from '../../../../../../components/ReplySort'
 import SubredditNav from '../../../../../../components/SubredditNav'
 import SubredditSidebar from '../../../../../../components/SubredditSidebar'
-import { fetchData } from '../../../../../../services/API'
+import { getSubredditAbout, parseCookie } from '../../../../../../services/API'
 import { getMoreComments } from '../../../../../../services/Comments'
 import { Comment } from '../../../../../../types/Comment'
 import { Link } from '../../../../../../types/Link'
 import { Listing } from '../../../../../../types/Listing'
 import { More } from '../../../../../../types/More'
-import { Sidebar } from '../../../../../../types/Sidebar'
-import { Subreddit } from '../../../../../../types/Subreddit'
 import { Thing } from '../../../../../../types/Thing'
+import { useRouter } from 'next/router'
+import { Cookie } from '../../../../../../types/Cookie'
 
-type Props = {
-  link: Link
-  thingReplies: Thing<Comment | More>[]
-  thingSubreddit: Thing<Subreddit>
-  sidebar: Sidebar
-}
+type PermaLink = [Listing<Thing<Link>>, Listing<Thing<Comment | More>>]
 
-const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit, sidebar }) => {
+const PostPermalinkPage: NextPage = () => {
+  const router = useRouter()
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [cookie, setCookie] = useState<Cookie>()
+  const { listings } = getSubredditAbout(router, cookie)
+  const { thingSubreddit } = getSubredditAbout(router, cookie)
+  const { sidebar } = getSubredditAbout(router, cookie)
+
+  useEffect(() => {
+    if (!cookie) {
+      setCookie(parseCookie())
+    }
+  }, [])
 
   async function loadMoreComments() {
     setIsLoading(true)
-    const thingMoreRef = thingReplies.find((thingReply) => thingReply.kind === 'more') as Thing<More>
+    const thingMoreRef = (listings as PermaLink)[1].data.children
+      .find((thingReply) => thingReply.kind === 'more') as Thing<More>
     const moreReplies = await getMoreComments(thingMoreRef)
     thingMoreRef.data.count = moreReplies.count
     thingMoreRef.data.children = moreReplies.children
@@ -44,18 +51,18 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit
         <Col className="pe-0">
           <div className="mb-3">
             {
-              link &&
+              listings &&
               <Row className="mt-3 mb-2 lh-sm px-3">
-                <Post link={link} />
+                <Post link={(listings as PermaLink)[0].data.children[0].data} />
               </Row>
             }
             <ReplySort />
             <hr className="mt-0" />
             {
-              thingReplies &&
+              listings &&
               <>
                 {
-                  thingReplies.map((thingReply, i) => (
+                  (listings as PermaLink)[1].data.children.map((thingReply, i) => (
                     <div key={i}>
                       {
                         thingReply.kind === 'more'
@@ -99,7 +106,7 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit
           </div>
         </Col>
         <Col className="col-auto ps-0">
-          <SubredditSidebar subreddit={thingSubreddit.data} sidebar={sidebar} />
+          <SubredditSidebar subreddit={thingSubreddit?.data} sidebar={sidebar} />
         </Col>
       </Row>
     </>
@@ -107,24 +114,3 @@ const PostPermalinkPage: NextPage<Props> = ({ link, thingReplies, thingSubreddit
 }
 
 export default PostPermalinkPage
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { subreddit } = context.query
-  const request = `https://oauth.reddit.com${context.resolvedUrl}?raw_json=1`
-  const cookie = context.req.cookies['access_auth']
-  context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
-  const listings = await fetchData<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(request, cookie)
-  let thingSubreddit: Thing<Subreddit> | undefined = undefined
-  let sidebar: Sidebar | undefined = undefined
-  thingSubreddit = await fetchData<Thing<Subreddit>>(`https://oauth.reddit.com/r/${subreddit}/about`, cookie)
-  sidebar = await fetchData<Sidebar>(`https://oauth.reddit.com/r/${subreddit}/api/widgets?raw_json=1`, cookie)
-
-  return {
-    props: {
-      link: listings[0].data.children[0].data,
-      thingReplies: listings[1].data.children,
-      thingSubreddit: thingSubreddit,
-      sidebar: sidebar
-    }
-  }
-}

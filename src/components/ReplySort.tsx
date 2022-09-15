@@ -15,7 +15,7 @@ export default function ReplySort() {
           sorts.map((s, i) => (
             <Nav.Item key={i}>
               <Link
-                href={`${sort ? router.asPath.substring(0, router.asPath.indexOf('?')) : router.asPath}?sort=${s}`}
+                href={sort ? router.asPath.replace(`sort=${sort}`, `sort=${s}`) : `${router.asPath}?sort=${s}`}
                 passHref>
                 <Nav.Link eventKey={s}
                   className={

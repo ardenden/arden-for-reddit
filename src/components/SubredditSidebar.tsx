@@ -5,14 +5,14 @@ import { Subreddit } from '../types/Subreddit'
 import { getShortDate } from '../utils/DateUtils'
 
 type Props = {
-  subreddit: Subreddit
-  sidebar: Sidebar
+  subreddit?: Subreddit
+  sidebar?: Sidebar
 }
 
 export default function SubredditSidebar({ subreddit, sidebar }: Props) {
   let info: Info | null = null
   let rule: Rule | null = null
-  let communites: Community[] = []
+  const communites: Community[] = []
   const extras: Extra[] = []
 
   if (sidebar) {
@@ -25,7 +25,7 @@ export default function SubredditSidebar({ subreddit, sidebar }: Props) {
         } else if (sidebar.items[key].kind === 'textarea') {
           extras.push(sidebar.items[key] as Extra)
         } else if (sidebar.items[key].kind === 'community-list') {
-          communites.unshift(sidebar.items[key] as Community)
+          communites.push(sidebar.items[key] as Community)
         }
       }
     }
