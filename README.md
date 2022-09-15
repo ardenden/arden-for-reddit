@@ -1,1 +1,2 @@
-# Next.js, TypeScript, Bootstrap
+# Next, TypeScript, Bootstrap
+learning next.js
