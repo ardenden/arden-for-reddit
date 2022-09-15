@@ -40,8 +40,7 @@ export default function SubredditNav() {
         <a className="text-dark fs-5">{subreddit}</a>
       </Link>
 
-      <Nav variant="tabs" defaultActiveKey="hot" activeKey={where as string}
-        className="border-0 d-flex gap-2 px-2 lh-sm mt-4">
+      <Nav variant="tabs" className="border-0 d-flex gap-2 px-2 lh-sm mt-4">
         {
           wheres.map((w, i) => (
             <Nav.Item key={i}>
@@ -50,11 +49,10 @@ export default function SubredditNav() {
                   ? `/r/${subreddit}/${w}/${linkid}/${linkslug}`
                   : `/r/${subreddit}${w === 'hot' ? '' : `/${w}`}`
               } passHref>
-                <Nav.Link eventKey={w}
-                  className={`nav-link fw-bold py-1 px-2 ${where === w || (!where && w === 'hot')
-                    ? 'border-primary border-bottom-0 text-orange bg-white'
-                    : 'text-blue'
-                    }`}>
+                <Nav.Link className={`nav-link fw-bold py-1 px-2 ${where === w || (!where && w === 'hot')
+                  ? 'border-primary border-bottom-0 text-orange bg-white active'
+                  : 'text-blue'
+                  }`}>
                   {w === 'duplicates' ? 'other discussions' : w}
                 </Nav.Link>
               </Link>

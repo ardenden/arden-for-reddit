@@ -6,6 +6,8 @@ import { Subreddit } from '../types/Subreddit'
 import { Thing } from '../types/Thing'
 import Navbar from './Navbar'
 import useSWRImmutable from 'swr/immutable'
+import SubredditNav from './SubredditNav'
+import SubredditSidebar from './SubredditSidebar'
 
 type Props = {
   children: ReactNode
@@ -27,6 +29,10 @@ export default function Layout({ children }: Props) {
   return (
     <div style={{ overflowX: 'hidden' }}>
       <Navbar thingSubreddits={listingSubreddits?.data.children} />
+      <SubredditNav />
+      <div className="float-end">
+        <SubredditSidebar />
+      </div>
       <main>{children}</main>
     </div>
   )
