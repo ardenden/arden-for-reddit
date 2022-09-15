@@ -21,10 +21,10 @@ export function getRelativeTime(timestamp: number): string {
   return output
 }
 
-export function getShortDate(timestamp: number): string {
+export function getFullDate(timestamp: number, monthOption: 'long' | 'short'): string {
   const date = new Date(timestamp * 1000)
   const output = date.toLocaleString('en-US', {
-    month: 'short',
+    month: monthOption,
     day: 'numeric',
     year: 'numeric'
   })

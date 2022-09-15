@@ -4,7 +4,7 @@ import { Subreddit } from '../types/Subreddit'
 import { Thing } from '../types/Thing'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { Sidebar } from '../types/Sidebar'
+import { Widget } from '../types/Widget'
 import { More } from '../types/More'
 import { Listing } from '../types/Listing'
 import { Link } from '../types/Link'
@@ -96,7 +96,7 @@ export function useSubredditAbout(router: NextRouter, cookie?: Cookie) {
 export function useSubredditWidget(router: NextRouter, cookie?: Cookie) {
   const { subreddit } = router.query
   const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
-  const { data } = useSWRImmutable<Sidebar>(
+  const { data } = useSWRImmutable<Widget>(
     (subreddit && isSubPage && cookie)
       ? [`https://oauth.reddit.com/r/${subreddit}/api/widgets?raw_json=1`, cookie.access_auth]
       : null,
@@ -104,7 +104,7 @@ export function useSubredditWidget(router: NextRouter, cookie?: Cookie) {
   )
 
   return {
-    sidebar: data
+    widgets: data
   }
 }
 
