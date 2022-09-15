@@ -115,8 +115,8 @@ export default function SubredditSidebar() {
                   <Card.Body className="p-2 d-flex flex-column gap-1">
                     {
                       b.buttons.map((c, j) => (
-                        <Link href={c.url} passHref>
-                          <BSButton key={j} className="border-secondary rounded-pill text-blue bg-light fw-bold">
+                        <Link key={j} href={c.url} passHref>
+                          <BSButton className="border-secondary rounded-pill text-blue bg-light fw-bold">
                             {c.text}
                           </BSButton>
                         </Link>
