@@ -4,6 +4,8 @@ import { More } from '../types/More'
 import { Thing } from '../types/Thing'
 import { fetchData, parseCookie } from './API'
 
+const OAUTH_URL = process.env.NEXT_PUBLIC_REDDIT_OAUTH_URL
+
 export async function getMoreComments(thingReply: Thing<Comment | More>) {
   const cookie = parseCookie()
   let more: More = <More>{}
@@ -30,7 +32,7 @@ export async function getMoreComments(thingReply: Thing<Comment | More>) {
       }
     }
   }>(
-    `https://oauth.reddit.com/api/morechildren?link_id=${linkId}&children=${children}&api_type=json&raw_json=1`,
+    `${OAUTH_URL}/api/morechildren?link_id=${linkId}&children=${children}&api_type=json&raw_json=1`,
     cookie?.access_auth
   )
   const thingReplies = <Thing<Comment | More>[]>JSON.parse(JSON.stringify(moreReplies.json.data.things))

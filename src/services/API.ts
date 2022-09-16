@@ -11,6 +11,8 @@ import { Link } from '../types/Link'
 import { Comment } from '../types/Comment'
 import { NextRouter } from 'next/router'
 
+const OAUTH_URL = process.env.NEXT_PUBLIC_REDDIT_OAUTH_URL
+
 export async function authenticateClient(): Promise<AccessAuth> {
   const response = await fetch('https://www.reddit.com/api/v1/access_token', {
     method: 'POST',
@@ -48,7 +50,7 @@ export async function fetchData<T>(request: RequestInfo, accessAuthString?: stri
 
 export function useListingLinks(router: NextRouter, cookie?: Cookie) {
   const { subreddit, homewhere } = router.query
-  let url = `https://oauth.reddit.com`
+  let url = OAUTH_URL
 
   if (subreddit || homewhere) {
     url = `${url}${router.asPath}`
@@ -66,7 +68,7 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
 
 export function usePermaLink(router: NextRouter, cookie?: Cookie) {
   const { subreddit, sort } = router.query
-  let url = `https://oauth.reddit.com${router.asPath}`
+  let url = `${OAUTH_URL}${router.asPath}`
 
   if (sort) {
     url = `${url}&raw_json=1`
@@ -89,7 +91,7 @@ export function useSubredditAbout(router: NextRouter, cookie?: Cookie) {
   const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
   const { data } = useSWRImmutable<Thing<Subreddit>>(
     (subreddit && isSubPage && cookie)
-      ? [`https://oauth.reddit.com/r/${subreddit}/about?raw_json=1`, cookie.access_auth]
+      ? [`${OAUTH_URL}/r/${subreddit}/about?raw_json=1`, cookie.access_auth]
       : null,
     fetchData
   )
@@ -104,7 +106,7 @@ export function useSubredditWidget(router: NextRouter, cookie?: Cookie) {
   const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
   const { data } = useSWRImmutable<Widget>(
     (subreddit && isSubPage && cookie)
-      ? [`https://oauth.reddit.com/r/${subreddit}/api/widgets?raw_json=1`, cookie.access_auth]
+      ? [`${OAUTH_URL}/r/${subreddit}/api/widgets?raw_json=1`, cookie.access_auth]
       : null,
     fetchData
   )
