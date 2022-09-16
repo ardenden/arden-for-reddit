@@ -59,7 +59,7 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
   }
 
   const { data } = useSWR<Listing<Thing<Link>>>(
-    cookie ? [url, cookie?.access_auth] : null,
+    (router.isReady && cookie) ? [url, cookie?.access_auth] : null,
     fetchData
   )
 
@@ -69,7 +69,7 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
 }
 
 export function usePermaLink(router: NextRouter, cookie?: Cookie) {
-  const { subreddit, sort } = router.query
+  const { sort } = router.query
   let url = `${OAUTH_URL}${router.asPath}`
 
   if (sort) {
@@ -79,7 +79,7 @@ export function usePermaLink(router: NextRouter, cookie?: Cookie) {
   }
 
   const { data } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(
-    (subreddit && cookie) ? [url, cookie?.access_auth] : null,
+    (router.isReady && cookie) ? [url, cookie?.access_auth] : null,
     fetchData
   )
 
@@ -92,7 +92,7 @@ export function useSubredditAbout(router: NextRouter, cookie?: Cookie) {
   const { subreddit } = router.query
   const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
   const { data } = useSWRImmutable<Thing<Subreddit>>(
-    (subreddit && isSubPage && cookie)
+    (router.isReady && subreddit && isSubPage && cookie)
       ? [`${OAUTH_URL}/r/${subreddit}/about?raw_json=1`, cookie.access_auth]
       : null,
     fetchData
@@ -107,7 +107,7 @@ export function useSubredditWidget(router: NextRouter, cookie?: Cookie) {
   const { subreddit } = router.query
   const isSubPage = subreddit !== 'popular' && subreddit !== 'all'
   const { data } = useSWRImmutable<Widget>(
-    (subreddit && isSubPage && cookie)
+    (router.isReady && subreddit && isSubPage && cookie)
       ? [`${OAUTH_URL}/r/${subreddit}/api/widgets?raw_json=1`, cookie.access_auth]
       : null,
     fetchData
