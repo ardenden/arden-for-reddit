@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Accordion, Button as BSButton, Card, ListGroup } from 'react-bootstrap'
-import { parseCookie, useSubredditAbout, useSubredditWidget } from '../services/API'
-import { Cookie } from '../types/Cookie'
+import { useSubredditAbout, useSubredditWidget } from '../services/API'
 import { Button, Calendar, Community, Extra, Info, Menu2, Rule } from '../types/Widget'
 import { getFullDate } from '../utils/DateUtils'
+import { CookieContext } from './CookieContext'
 
 export default function SubredditSidebar() {
   const router = useRouter()
-  const [cookie, setCookie] = useState<Cookie>()
+  const cookie = useContext(CookieContext)
   let info: Info | null = null
   let rule: Rule | null = null
   const communites: Community[] = []
@@ -19,12 +19,6 @@ export default function SubredditSidebar() {
   const buttons: Button[] = []
   const { thingSubreddit } = useSubredditAbout(router, cookie)
   const { widgets } = useSubredditWidget(router, cookie)
-
-  useEffect(() => {
-    if (!cookie) {
-      setCookie(parseCookie())
-    }
-  }, [])
 
   if (widgets) {
     for (const key in widgets.items) {

@@ -1,22 +1,16 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Row } from 'react-bootstrap'
-import { parseCookie, useListingLinks } from '../services/API'
-import { Cookie } from '../types/Cookie'
+import { useListingLinks } from '../services/API'
+import { CookieContext } from './CookieContext'
 import Paginate from './Paginate'
 import Post from './Post'
 import Rank from './Rank'
 
 export default function SubredditPosts() {
   const router = useRouter()
-  const [cookie, setCookie] = useState<Cookie>()
+  const cookie = useContext(CookieContext)
   const { listingLinks } = useListingLinks(router, cookie)
-
-  useEffect(() => {
-    if (!cookie) {
-      setCookie(parseCookie())
-    }
-  }, [])
 
   if (!listingLinks) return <div className="mx-2 lead fw-bold text-orange">loading...</div>
 
