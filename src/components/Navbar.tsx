@@ -1,16 +1,22 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useContext } from 'react'
 import { Nav, Navbar as BSNavbar } from 'react-bootstrap'
 import { Subreddit } from '../types/Subreddit'
 import { Thing } from '../types/Thing'
+import { CookieContext } from './CookieContext'
+import useSWRImmutable from 'swr/immutable'
+import { fetchData } from '../services/API'
+import { Listing } from '../types/Listing'
 
-type Props = {
-  thingSubreddits?: Thing<Subreddit>[]
-}
-
-export default function Navbar({ thingSubreddits }: Props) {
+export default function Navbar() {
   const router = useRouter()
   const { subreddit } = router.query
+  const cookie = useContext(CookieContext)
+  const { data: listingSubreddits } = useSWRImmutable<Listing<Thing<Subreddit>>>(
+    cookie ? [`${process.env.NEXT_PUBLIC_REDDIT_OAUTH_URL}/subreddits/default`, cookie?.access_auth] : null,
+    fetchData
+  )
 
   return (
     <>
@@ -30,8 +36,8 @@ export default function Navbar({ thingSubreddits }: Props) {
             <Nav.Link>random</Nav.Link>
           </Link>
           {
-            thingSubreddits &&
-            thingSubreddits.map((thingSubreddit, i) => (
+            (listingSubreddits && listingSubreddits.data) &&
+            listingSubreddits.data.children.map((thingSubreddit, i) => (
               <Link key={i} href={thingSubreddit.data.url} passHref>
                 <Nav.Link className={
                   `text-lowercase ${thingSubreddit.data.display_name === subreddit ? 'text-orange fw-bold' : ''}`
