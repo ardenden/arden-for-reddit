@@ -28,7 +28,7 @@ export default function SubredditPosts() {
           {
             listingLinks.data.children.map((thingLink, i) => (
               <div key={i}>
-                <Row className="lh-sm px-3 mx-0">
+                <Row className="lh-sm px-1 mx-0">
                   <Rank i={i} />
                   <Post link={thingLink.data} />
                 </Row>

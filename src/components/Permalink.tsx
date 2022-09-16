@@ -41,7 +41,7 @@ export default function Permalink() {
       <div className="mb-3">
         {
           listings &&
-          <Row className="mt-3 mb-2 lh-sm px-3">
+          <Row className="mt-3 mb-2 lh-sm px-2">
             <Post link={listings[0].data.children[0].data} />
           </Row>
         }
