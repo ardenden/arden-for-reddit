@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
+import SubredditPosts from '../components/SubredditPosts'
 
-const Home: NextPage = () => {
+const SubredditPage: NextPage = () => {
+
   return (
-    <>
-      <h1>Home</h1>
-    </>
+    <SubredditPosts />
   )
 }
 
-export default Home
+export default SubredditPage

@@ -47,9 +47,15 @@ export async function fetchData<T>(request: RequestInfo, accessAuthString?: stri
 }
 
 export function useListingLinks(router: NextRouter, cookie?: Cookie) {
-  const { subreddit } = router.query
+  const { subreddit, homewhere } = router.query
+  let url = `https://oauth.reddit.com`
+
+  if (subreddit || homewhere) {
+    url = `${url}${router.asPath}`
+  }
+
   const { data } = useSWR<Listing<Thing<Link>>>(
-    (subreddit && cookie) ? [`https://oauth.reddit.com${router.asPath}`, cookie?.access_auth] : null,
+    cookie ? [url, cookie?.access_auth] : null,
     fetchData
   )
 

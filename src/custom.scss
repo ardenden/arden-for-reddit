@@ -55,7 +55,7 @@ table {
   }
 }
 
-.nav-tabs .nav-item .nav-link:not(.active) {
+.nav-tabs .nav-item .nav-link:not(.active-where) {
   @extend .border-0;
   background-color: #eff7ff;
 }
