@@ -56,10 +56,10 @@ export default function Post({ link }: Props) {
                 </NextLink>
             }
             {
-              (subreddit === 'popular' || subreddit === 'all') &&
+              (!subreddit || subreddit === 'popular' || subreddit === 'all') &&
               <>
                 {' '} to {' '}
-                <NextLink href={link.subreddit}>
+                <NextLink href={`/r/${link.subreddit}`}>
                   <a className="text-blue">{`r/${link.subreddit}`}</a>
                 </NextLink>
               </>
