@@ -1,23 +1,17 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Image, Nav } from 'react-bootstrap'
-import { parseCookie, useSubredditAbout } from '../services/API'
-import { Cookie } from '../types/Cookie'
+import { useSubredditAbout } from '../services/API'
+import { CookieContext } from './CookieContext'
 
 export default function SubredditNav() {
   const router = useRouter()
-  const [cookie, setCookie] = useState<Cookie>()
+  const cookie = useContext(CookieContext)
   const { subreddit, where, linkid, linkslug } = router.query
   const subDefaults = ['hot', 'new', 'rising', 'controversial', 'top']
   const postDefaults = ['comments', 'duplicates']
   const { thingSubreddit } = useSubredditAbout(router, cookie)
-
-  useEffect(() => {
-    if (!cookie) {
-      setCookie(parseCookie())
-    }
-  }, [])
 
   if (subreddit !== 'popular' && subreddit !== 'all') {
     subDefaults.push('gilded', 'wiki')

@@ -1,28 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Row } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 import { Thing } from '../types/Thing'
 import { More } from '../types/More'
 import { Comment } from '../types/Comment'
-import { parseCookie, usePermaLink } from '../services/API'
+import { usePermaLink } from '../services/API'
 import { getMoreComments } from '../services/Comments'
-import { Cookie } from '../types/Cookie'
 import Post from './Post'
 import Reply from './Reply'
 import ReplySort from './ReplySort'
+import { CookieContext } from './CookieContext'
 
 export default function Permalink() {
   const router = useRouter()
-  const [cookie, setCookie] = useState<Cookie>()
+  const cookie = useContext(CookieContext)
   const [isLoading, setIsLoading] = useState(false)
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const { listings } = usePermaLink(router, cookie)
-
-  useEffect(() => {
-    if (!cookie) {
-      setCookie(parseCookie())
-    }
-  }, [])
 
   async function loadMoreComments() {
     setIsLoading(true)
