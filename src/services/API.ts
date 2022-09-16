@@ -54,6 +54,8 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
 
   if (subreddit || homewhere) {
     url = `${url}${router.asPath}`
+  } else {
+    url = `${url}/r/popular${router.asPath}`
   }
 
   const { data } = useSWR<Listing<Thing<Link>>>(
