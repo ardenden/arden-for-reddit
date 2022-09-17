@@ -30,6 +30,10 @@ a {
 
 .reply {
   max-width: 60em;
+
+  hr {
+    @extend .my-1
+  }
 }
 
 blockquote {

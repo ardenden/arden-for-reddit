@@ -46,11 +46,11 @@ export default function Reply({ thingComment }: Props) {
                 :
                 <>
                   <Link href={`/user/${thingComment.data.author}`}>
-                    <a className={`${thingComment.data.distinguished
+                    <a className={`fw-bold ${thingComment.data.distinguished
                       ? `text-${thingComment.data.distinguished}`
                       : thingComment.data.is_submitter
-                        ? 'text-white bg-blue'
-                        : 'text-blue'} mx-n1 px-1 rounded-1 fw-bold ${isCollapsed ? 'text-muted' : ''}`
+                        ? 'text-white bg-blue rounded-1 px-1'
+                        : 'text-blue'} ${isCollapsed ? 'text-muted' : ''}`
                     }>
                       {thingComment.data.author}
                     </a>

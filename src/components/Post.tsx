@@ -34,7 +34,7 @@ export default function Post({ link }: Props) {
             {' '}
             <small>
               <NextLink href={link.is_self ? `/r/${link.subreddit}` : `/domain/${link.domain}`}>
-                <a className="text-muted">({link.domain})</a>
+                <a className="text-muted ms-1">({link.domain})</a>
               </NextLink>
             </small>
           </Col>
@@ -52,9 +52,9 @@ export default function Post({ link }: Props) {
                   </NextLink> {' '}
                   {
                     link.distinguished &&
-                    <>
+                    <span className="ms-1">
                       [<span className={`text-${link.distinguished}`} />]
-                    </>
+                    </span>
                   }
                 </>
             }
@@ -63,7 +63,7 @@ export default function Post({ link }: Props) {
               <>
                 {' '} to {' '}
                 <NextLink href={`/r/${link.subreddit}`}>
-                  <a className="text-blue">{`r/${link.subreddit}`}</a>
+                  <a className="text-blue">{`${link.subreddit}`}</a>
                 </NextLink>
               </>
             }
