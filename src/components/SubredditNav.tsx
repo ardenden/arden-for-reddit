@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
 import { Image, Nav } from 'react-bootstrap'
 import { useSubredditAbout } from '../services/API'
-import { CookieContext } from './CookieContext'
+import { useCookie } from './CookieContext'
 
 export default function SubredditNav() {
   const router = useRouter()
-  const cookie = useContext(CookieContext)
+  const cookie = useCookie()
   const { subreddit, homewhere, where, linkid, linkslug } = router.query
   const subDefaults = ['hot', 'new', 'rising', 'controversial', 'top']
   const postDefaults = ['comments', 'duplicates']
@@ -21,7 +20,7 @@ export default function SubredditNav() {
 
   return (
     <div className="d-flex align-items-end border-bottom border-primary fw-bold gap-2 px-2"
-      style={{ background: '#d0e4f4' }}>
+      style={{ background: '#d0e4f4', height: '60px' }}>
       {
         (thingSubreddit && thingSubreddit.data) &&
         (thingSubreddit.data.header_img
@@ -34,7 +33,7 @@ export default function SubredditNav() {
         <a className="text-dark fs-5">{subreddit ? subreddit : 'arden for reddit'}</a>
       </Link>
 
-      <Nav variant="tabs" className="border-0 d-flex gap-2 px-2 lh-sm mt-4">
+      <Nav variant="tabs" className="border-0 d-flex gap-2 px-2 lh-sm">
         {
           wheres.map((w, i) => (
             <Nav.Item key={i}>

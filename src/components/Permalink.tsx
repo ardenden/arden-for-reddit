@@ -1,15 +1,14 @@
-import { useContext } from 'react'
 import { Row } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 import { usePermaLink } from '../services/API'
 import Post from './Post'
 import ReplySort from './ReplySort'
-import { CookieContext } from './CookieContext'
+import { useCookie } from './CookieContext'
 import PermalinkReplies from './PermalinkReplies'
 
 export default function Permalink() {
   const router = useRouter()
-  const cookie = useContext(CookieContext)
+  const cookie = useCookie()
   const { listingLinks } = usePermaLink(router, cookie)
 
   if (!listingLinks) return <div className="mx-2 lead fw-bold text-orange">loading...</div>

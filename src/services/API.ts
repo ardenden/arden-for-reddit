@@ -124,8 +124,8 @@ export function useSubredditWidget(router: NextRouter, cookie?: Cookie) {
   }
 }
 
-export function parseCookie(): Cookie {
-  const cookie = Object.fromEntries(document.cookie.split(/; */).map((c) => {
+export function parseCookie(cookieString: string): Cookie {
+  const cookie = Object.fromEntries(cookieString.split(/; */).map((c) => {
     const [key, ...v] = c.split('=')
 
     return [key, decodeURIComponent(v.join('='))]

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { parseCookie } from '../services/API'
 import { Cookie } from '../types/Cookie'
 
@@ -7,13 +7,14 @@ type Props = {
 }
 
 const CookieContext = createContext<Cookie | undefined>(undefined)
+const useCookie = () => useContext(CookieContext)
 
-function CookieContextProvider({ children }: Props) {
+function CookieProvider({ children }: Props) {
   const [cookie, setCookie] = useState<Cookie>()
 
   useEffect(() => {
     if (!cookie) {
-      setCookie(parseCookie())
+      setCookie(parseCookie(document.cookie))
     }
   }, [])
 
@@ -25,6 +26,6 @@ function CookieContextProvider({ children }: Props) {
 }
 
 export {
-  CookieContext,
-  CookieContextProvider
+  CookieProvider,
+  useCookie
 }

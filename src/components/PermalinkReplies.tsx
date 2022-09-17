@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Thing } from '../types/Thing'
 import { More } from '../types/More'
@@ -6,11 +6,11 @@ import { Comment } from '../types/Comment'
 import { usePermaLink } from '../services/API'
 import { getMoreComments } from '../services/Comments'
 import Reply from './Reply'
-import { CookieContext } from './CookieContext'
+import { useCookie } from './CookieContext'
 
 export default function PermalinkReplies() {
   const router = useRouter()
-  const cookie = useContext(CookieContext)
+  const cookie = useCookie()
   const [isLoading, setIsLoading] = useState(false)
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const { listingReplies } = usePermaLink(router, cookie)

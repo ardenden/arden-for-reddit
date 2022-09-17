@@ -7,7 +7,7 @@ import { fetchData, parseCookie } from './API'
 const OAUTH_URL = process.env.NEXT_PUBLIC_REDDIT_OAUTH_URL
 
 export async function getMoreComments(thingReply: Thing<Comment | More>) {
-  const cookie = parseCookie()
+  const cookie = parseCookie(document.cookie)
   let more: More = <More>{}
   let linkId = ''
   let children = ''
