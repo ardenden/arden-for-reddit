@@ -19,6 +19,10 @@ $pink: #d63384;
 $orange: #fd7e14;
 $teal: #20c997;
 
+$moderator: #228822;
+$admin: #ff0011;
+$special: #BE1337;
+
 $theme-colors: (
   "blue": $blue,
   "gray": $gray,
@@ -38,7 +42,10 @@ $theme-colors: (
   "warning":$warning,
   "danger":$danger,
   "light":$light,
-  "dark":$dark
+  "dark":$dark,
+  "moderator": $moderator,
+  "admin": $admin,
+  "special": $special
 );
 
 $enable-negative-margins: true;

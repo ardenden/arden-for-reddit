@@ -46,13 +46,29 @@ export default function Reply({ thingComment }: Props) {
                 :
                 <>
                   <Link href={`/user/${thingComment.data.author}`}>
-                    <a className={`text-blue fw-bold ${isCollapsed ? 'text-muted' : ''}`}>
+                    <a className={`${thingComment.data.distinguished
+                      ? `text-${thingComment.data.distinguished}`
+                      : thingComment.data.is_submitter
+                        ? 'text-white bg-blue'
+                        : 'text-blue'} mx-n1 px-1 rounded-1 fw-bold ${isCollapsed ? 'text-muted' : ''}`
+                    }>
                       {thingComment.data.author}
                     </a>
                   </Link> {' '}
                 </>
             }
             <small className="ms-1">
+              {
+                (thingComment.data.is_submitter || thingComment.data.distinguished) &&
+                <>
+                  [<span className={`${thingComment.data.distinguished
+                    ? `text-${thingComment.data.distinguished}`
+                    : 'text-blue'} ${isCollapsed ? 'text-muted' : ''}`}>
+                    {thingComment.data.is_submitter ? thingComment.data.distinguished ? 'S,' : 'S' : ''}
+                  </span>]
+                  {' · '}
+                </>
+              }
               {
                 thingComment.data.score_hidden
                   ? '[score hidden]'

@@ -16,6 +16,18 @@ a {
   }
 }
 
+.text-moderator::after {
+  content: 'M';
+}
+
+.text-admin::after {
+  content: 'A';
+}
+
+.text-special::after {
+  content: 'Δ';
+}
+
 .reply {
   max-width: 60em;
 }

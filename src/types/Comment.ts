@@ -31,4 +31,5 @@ export interface Comment extends Created, Votable {
   distinguished: string | null
   permalink: string
   collapsed: boolean
+  is_submitter: boolean
 }

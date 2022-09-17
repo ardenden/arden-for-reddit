@@ -46,9 +46,17 @@ export default function Post({ link }: Props) {
               link.author === '[deleted]'
                 ? <span className="text-muted">{link.author}</span>
                 :
-                <NextLink href={`/user/${link.author}`}>
-                  <a className="text-blue">{link.author}</a>
-                </NextLink>
+                <>
+                  <NextLink href={`/user/${link.author}`}>
+                    <a className={`${link.distinguished ? `text-${link.distinguished}` : 'text-blue'}`}>{link.author}</a>
+                  </NextLink> {' '}
+                  {
+                    link.distinguished &&
+                    <>
+                      [<span className={`text-${link.distinguished}`} />]
+                    </>
+                  }
+                </>
             }
             {
               (!subreddit || subreddit === 'popular' || subreddit === 'all') &&
