@@ -9,6 +9,10 @@ a {
 
   &.link {
     color: #0000ff;
+
+    &.stickied {
+      color: #228822;
+    }
   }
 }
 

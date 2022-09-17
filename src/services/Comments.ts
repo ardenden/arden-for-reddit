@@ -44,7 +44,8 @@ export async function getMoreComments(thingReply: Thing<Comment | More>) {
       before: '',
       after: '',
       modhash: '',
-      children: []
+      children: [],
+      dist: 0
     }
 
     for (let j = thingReplies.length - 1; j >= 0; j--) {

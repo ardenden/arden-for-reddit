@@ -5,5 +5,6 @@ export interface Listing<T> {
     after: string
     modhash: string
     children: T[]
+    dist: number
   }
 }

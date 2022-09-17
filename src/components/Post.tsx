@@ -26,15 +26,10 @@ export default function Post({ link }: Props) {
         <Row>
           <Col>
             {
-              link.is_self
-                ?
-                <NextLink href={link.permalink}>
-                  <a className="lead fw-normal link"
-                    dangerouslySetInnerHTML={{ __html: link.title }} />
-                </NextLink>
-                : <a href={link.url}
-                  className="lead fw-normal link"
-                  dangerouslySetInnerHTML={{ __html: link.title }} />
+              <NextLink href={link.is_self ? link.permalink : link.url}>
+                <a dangerouslySetInnerHTML={{ __html: link.title }} target={link.is_self ? '_self' : '_blank'}
+                  className={`lead fw-normal link ${link.stickied ? 'stickied' : ''}`} />
+              </NextLink>
             }
             {' '}
             <small>
