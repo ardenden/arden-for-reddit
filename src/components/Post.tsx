@@ -53,7 +53,7 @@ export default function Post({ link }: Props) {
                   {
                     link.distinguished &&
                     <span className="ms-1">
-                      [<span className={`text-${link.distinguished}`} />]
+                      [<span className={`distinguished text-${link.distinguished}`} />]
                     </span>
                   }
                 </>

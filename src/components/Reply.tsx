@@ -61,7 +61,7 @@ export default function Reply({ thingComment }: Props) {
               {
                 (thingComment.data.is_submitter || thingComment.data.distinguished) &&
                 <>
-                  [<span className={`${thingComment.data.distinguished
+                  [<span className={`distinguished ${thingComment.data.distinguished
                     ? `text-${thingComment.data.distinguished}`
                     : 'text-blue'} ${isCollapsed ? 'text-muted' : ''}`}>
                     {thingComment.data.is_submitter ? thingComment.data.distinguished ? 'S,' : 'S' : ''}

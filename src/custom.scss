@@ -16,16 +16,18 @@ a {
   }
 }
 
-.text-moderator::after {
-  content: 'M';
-}
+.distinguished {
+  &.text-moderator::after {
+    content: 'M';
+  }
 
-.text-admin::after {
-  content: 'A';
-}
+  &.text-admin::after {
+    content: 'A';
+  }
 
-.text-special::after {
-  content: 'Δ';
+  &.text-special::after {
+    content: 'Δ';
+  }
 }
 
 .reply {
