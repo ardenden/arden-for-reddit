@@ -71,6 +71,7 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
 export function usePermaLink(router: NextRouter, cookie?: Cookie) {
   const { sort } = router.query
   let url = `${OAUTH_URL}${router.asPath}`
+  let postUrl = url.includes('?') ? `${url.substring(0, url.indexOf('?'))}?raw_json=1` : `${url}?raw_json=1`
 
   if (sort) {
     url = `${url}&raw_json=1`
@@ -78,13 +79,18 @@ export function usePermaLink(router: NextRouter, cookie?: Cookie) {
     url = `${url}?raw_json=1`
   }
 
-  const { data } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(
+  const { data: listingLinks } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(
+    (router.isReady && cookie) ? [postUrl, cookie?.access_auth] : null,
+    fetchData
+  )
+  const { data: listingReplies } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(
     (router.isReady && cookie) ? [url, cookie?.access_auth] : null,
     fetchData
   )
 
   return {
-    listings: data
+    listingLinks: listingLinks?.[0],
+    listingReplies: listingReplies?.[1]
   }
 }
 
