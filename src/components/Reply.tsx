@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Collapse, Container } from 'react-bootstrap'
 import { getMoreComments } from '../services/Comments'
 import { Comment } from '../types/Comment'
@@ -14,6 +14,7 @@ type Props = {
 
 export default function Reply({ thingComment }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(thingComment.data.collapsed)
+  const [childrenCount, setChildrenCount] = useState(0)
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -26,6 +27,18 @@ export default function Reply({ thingComment }: Props) {
     setThingComments(thingComments.concat(moreReplies.thingComments))
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    let count = 0
+    const parent = document.querySelector(`#${thingComment.data.id}`)
+    const comments = Array.from(parent!.getElementsByClassName('reply'))
+    count += comments.length - 1
+    const more = Array.from(parent!.querySelectorAll('[class^=more]'))
+    more.forEach(m => {
+      count += Number(m.className.substring(m.className.indexOf('-') + 1))
+    })
+    setChildrenCount(count)
+  }, [])
 
   return (
     <>
@@ -74,6 +87,7 @@ export default function Reply({ thingComment }: Props) {
               }
               {' · '}
               {getRelativeTime(thingComment.data.created)}
+              {isCollapsed && ` · (${childrenCount} children)`}
             </small>
           </small>
         </div>
@@ -126,7 +140,9 @@ export default function Reply({ thingComment }: Props) {
                                 : (thingReply.data as More).children.length > 0 &&
                                 <div className="mt-2">
                                   <small>
-                                    <a onClick={loadMoreComments} style={{ cursor: 'pointer' }}>
+                                    <a onClick={loadMoreComments}
+                                      className={`more-${(thingReply.data as More).count}`}
+                                      style={{ cursor: 'pointer' }}>
                                       <span className="text-blue fw-bold">load more comments</span> {' '}
                                       <span className="text-muted fw-normal">
                                         ({(thingReply.data as More).count} replies)
