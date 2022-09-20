@@ -68,26 +68,28 @@ export default function Reply({ thingComment }: Props) {
                   </Link> {' '}
                 </>
             }
-            <small className="ms-1">
+            <small>
               {
                 (thingComment.data.is_submitter || thingComment.data.distinguished) &&
-                <>
+                <span className="ms-1">
                   [<span className={`distinguished ${thingComment.data.distinguished
                     ? `text-${thingComment.data.distinguished}`
                     : 'text-blue'} ${isCollapsed ? 'text-muted' : ''}`}>
                     {thingComment.data.is_submitter ? thingComment.data.distinguished ? 'S,' : 'S' : ''}
                   </span>]
-                  {' · '}
-                </>
+                </span>
               }
-              {
-                thingComment.data.score_hidden
-                  ? '[score hidden]'
-                  : `${formatScore(thingComment.data.score)} points`
-              }
-              {' · '}
-              {getRelativeTime(thingComment.data.created)}
-              {isCollapsed && ` · (${childrenCount} children)`}
+              <span className="ms-1">
+                {
+                  thingComment.data.score_hidden
+                    ? '[score hidden]'
+                    : `${formatScore(thingComment.data.score)} ${thingComment.data.score === 1 ? 'point' : 'points'}`
+                }
+              </span>
+              <span className="ms-1">{getRelativeTime(thingComment.data.created)}</span>
+              <span className="ms-1">
+                {isCollapsed && `(${childrenCount} ${childrenCount === 1 ? 'child' : 'children'})`}
+              </span>
             </small>
           </small>
         </div>
