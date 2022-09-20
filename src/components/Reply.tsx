@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Collapse, Container } from 'react-bootstrap'
 import { getMoreComments } from '../services/Comments'
@@ -14,7 +13,6 @@ type Props = {
 }
 
 export default function Reply({ thingComment }: Props) {
-  const router = useRouter()
   const [isCollapsed, setIsCollapsed] = useState(thingComment.data.collapsed)
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +29,7 @@ export default function Reply({ thingComment }: Props) {
 
   return (
     <>
-      <div className="px-2">
+      <div id={`${thingComment.data.id}`} className="px-2">
         <div>
           <a onClick={() => setIsCollapsed(!isCollapsed)} style={{ cursor: 'pointer' }}>
             {isCollapsed ? '[+]' : '[–]'}
@@ -94,9 +92,7 @@ export default function Reply({ thingComment }: Props) {
                     thingComment.data.parent_id !== thingComment.data.link_id &&
                     <>
                       {' · '}
-                      <Link href={`${router.asPath}/${thingComment.data.parent_id.substring(3)}`}>
-                        <a className="text-gray">parent</a>
-                      </Link>
+                      <a href={`#${thingComment.data.parent_id.substring(3)}`} className="text-gray">parent</a>
                     </>
                   }
                 </small>

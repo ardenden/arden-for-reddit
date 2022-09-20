@@ -71,6 +71,7 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
 export function usePermaLink(router: NextRouter, cookie?: Cookie) {
   const { sort } = router.query
   let url = `${OAUTH_URL}${router.asPath}`
+  url = url.includes('#') ? url.substring(0, url.indexOf('#')) : url
   let postUrl = url.includes('?') ? `${url.substring(0, url.indexOf('?'))}?raw_json=1` : `${url}?raw_json=1`
 
   if (sort) {
