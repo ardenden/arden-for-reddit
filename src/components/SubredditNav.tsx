@@ -24,9 +24,9 @@ export default function SubredditNav() {
       {
         (thingSubreddit && thingSubreddit.data) &&
         (thingSubreddit.data.header_img
-          ? <Image src={thingSubreddit.data.header_img} height="60" className="me-2" />
+          ? <Image src={thingSubreddit.data.header_img} height="60" className="me-2" style={{ maxWidth: '175px' }} />
           : thingSubreddit.data.icon_img &&
-          <Image src={thingSubreddit.data.icon_img} height="60" className="me-2" />)
+          <Image src={thingSubreddit.data.icon_img} height="60" className="me-2" style={{ maxWidth: '175px' }} />)
       }
 
       <Link href={subreddit ? `/r/${subreddit}` : '/'}>

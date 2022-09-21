@@ -34,7 +34,7 @@ a {
   max-width: 60em;
 
   hr {
-    @extend .my-1
+    @extend .my-1;
   }
 }
 
@@ -77,12 +77,19 @@ table {
   }
 }
 
-.nav-tabs .nav-item .nav-link:not(.active-where) {
-  @extend .border-0;
-  background-color: #eff7ff;
+.nav-tabs .nav-item .nav-link {
+  border-top-left-radius: $border-radius-sm;
+  border-top-right-radius: $border-radius-sm;
+
+  &:not(.active-where) {
+    @extend .border-0;
+    background-color: #eff7ff;
+  }
 }
 
 .card {
+  @extend .rounded-1;
+
   .card-body {
     .sidebar-extra div table {
       @extend .table, .table-sm, .mb-0, .w-100;

@@ -21,7 +21,32 @@ export default function Post({ link }: Props) {
         {formatScore(link.score)}
       </Col>
       <Col className="d-flex align-items-center col-auto pe-0">
-        <Image src={link.thumbnail} width="75" height="75"></Image>
+        {
+          !link.thumbnail
+            || link.thumbnail === 'self'
+            || link.thumbnail === 'default'
+            || link.thumbnail === 'nsfw'
+            || link.thumbnail === 'spoiler'
+            || link.thumbnail === 'image'
+            ?
+            <div className="d-flex align-items-center justify-content-center bg-secondary rounded-circle fs-1"
+              style={{ height: '75px', width: '75px' }}>
+              {
+                link.thumbnail === 'self'
+                  ? '📃'
+                  : link.thumbnail === 'default'
+                    ? '🔗'
+                    : link.thumbnail === 'nsfw'
+                      ? '🔞'
+                      : link.thumbnail === 'spoiler'
+                        ? '⚠️'
+                        : link.thumbnail === 'image'
+                          ? '🖼️'
+                          : 'A'
+              }
+            </div>
+            : <Image className="rounded-1" src={link.thumbnail} width="75" height="75"></Image>
+        }
       </Col>
       <Col>
         <Row>
