@@ -31,4 +31,5 @@ export interface Link extends Created, Votable {
   edited: number
   distinguished: string
   stickied: boolean
+  suggested_sort: string
 }

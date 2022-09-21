@@ -18,7 +18,7 @@ export default function Permalink() {
       <Row className="mt-3 mb-2 lh-sm px-2">
         <Post link={listingLinks.data.children[0].data} />
       </Row>
-      <ReplySort />
+      <ReplySort suggestedSort={listingLinks.data.children[0].data.suggested_sort} />
       <hr className="mt-0" />
       <PermalinkReplies />
     </div>
