@@ -50,10 +50,7 @@ export default function Reply({ thingComment }: Props) {
           <small className={`text-muted ${isCollapsed ? 'fst-italic' : ''}`}>
             {
               thingComment.data.author === '[deleted]'
-                ?
-                <span className="text-muted">
-                  {thingComment.data.author} {' '}
-                </span>
+                ? <span className="text-muted">{thingComment.data.author}</span>
                 :
                 <>
                   <Link href={`/user/${thingComment.data.author}`}>
@@ -65,13 +62,13 @@ export default function Reply({ thingComment }: Props) {
                     }>
                       {thingComment.data.author}
                     </a>
-                  </Link> {' '}
+                  </Link>
                 </>
             }
-            <small>
+            <small className="ms-1">
               {
                 (thingComment.data.is_submitter || thingComment.data.distinguished) &&
-                <span className="ms-1">
+                <span>
                   [<span className={`distinguished ${thingComment.data.distinguished
                     ? `text-${thingComment.data.distinguished}`
                     : 'text-blue'} ${isCollapsed ? 'text-muted' : ''}`}>
