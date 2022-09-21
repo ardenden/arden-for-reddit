@@ -12,6 +12,7 @@ type Props = {
 export default function Post({ link }: Props) {
   const router = useRouter()
   const { subreddit } = router.query
+  const stickiedClass = link.stickied && subreddit && subreddit !== 'popular' && subreddit !== 'all' ? 'stickied' : ''
 
   return (
     <>
@@ -28,7 +29,7 @@ export default function Post({ link }: Props) {
             {
               <NextLink href={link.is_self ? link.permalink : link.url}>
                 <a dangerouslySetInnerHTML={{ __html: link.title }} target={link.is_self ? '_self' : '_blank'}
-                  className={`lead fw-normal link ${link.stickied ? 'stickied' : ''}`} />
+                  className={`lead fw-normal link ${stickiedClass}`} />
               </NextLink>
             }
             {' '}
@@ -49,7 +50,7 @@ export default function Post({ link }: Props) {
                 <>
                   <NextLink href={`/user/${link.author}`}>
                     <a className={`${link.distinguished ? `text-${link.distinguished}` : 'text-blue'}`}>{link.author}</a>
-                  </NextLink> {' '}
+                  </NextLink>
                   {
                     link.distinguished &&
                     <span className="ms-1">
