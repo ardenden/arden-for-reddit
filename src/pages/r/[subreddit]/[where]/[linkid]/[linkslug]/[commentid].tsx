@@ -1,10 +1,9 @@
 import { NextPage } from 'next'
+import Permalink from '../../../../../../components/Permalink'
 
 const CommentPermalinkPage: NextPage = () => {
   return (
-    <>
-      <h1>Comment Permalink Page</h1>
-    </>
+    <Permalink />
   )
 }
 

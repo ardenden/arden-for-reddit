@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Collapse, Container } from 'react-bootstrap'
 import { getMoreComments } from '../services/Comments'
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export default function Reply({ thingComment }: Props) {
+  const router = useRouter()
+  const { commentid } = router.query
   const [isCollapsed, setIsCollapsed] = useState(thingComment.data.collapsed)
   const [childrenCount, setChildrenCount] = useState(0)
   const [thingComments, setThingComments] = useState<Thing<Comment>[]>([])
@@ -94,8 +97,13 @@ export default function Reply({ thingComment }: Props) {
         <Collapse in={!isCollapsed} timeout={50}>
           <div>
             <div>
-              <Container className="mx-0 px-0 reply"
-                dangerouslySetInnerHTML={{ __html: thingComment.data.body_html }} />
+              <div style={
+                commentid && commentid === thingComment.data.id
+                  ? { backgroundColor: '#ffc' }
+                  : {}
+              }>
+                <Container className="mx-0 px-0 reply" dangerouslySetInnerHTML={{ __html: thingComment.data.body_html }} />
+              </div>
               <div className="text-muted mt-n1">
                 <small>
                   <Link href={thingComment.data.permalink}>
@@ -105,7 +113,10 @@ export default function Reply({ thingComment }: Props) {
                     thingComment.data.parent_id !== thingComment.data.link_id &&
                     <>
                       {' · '}
-                      <a href={`#${thingComment.data.parent_id.substring(3)}`} className="text-gray">parent</a>
+                      <a href={`${commentid && commentid === thingComment.data.id ? '' : '#'
+                        }${thingComment.data.parent_id.substring(3)}`} className="text-gray">
+                        parent
+                      </a>
                     </>
                   }
                 </small>
