@@ -30,6 +30,10 @@ a {
   }
 }
 
+.badge {
+  border-radius: $border-radius-sm;
+}
+
 .reply {
   max-width: 60em;
 

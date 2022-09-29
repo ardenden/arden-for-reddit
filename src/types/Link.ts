@@ -7,12 +7,24 @@ export interface Link extends Created, Votable {
   author: string
   author_flair_css_class: string
   author_flair_text: string
+  author_flair_richtext?: {
+    e: string
+    a?: string
+    t?: string
+    u?: string
+  }[]
   clicked: boolean
   domain: string
   hidden: boolean
   is_self: boolean
   link_flair_css_class: string
   link_flair_text: string
+  link_flair_richtext?: {
+    e: string
+    a?: string
+    t?: string
+    u?: string
+  }[]
   locked: boolean
   media: { [key: string]: any } | null
   media_embed: { [key: string]: any }

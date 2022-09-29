@@ -54,13 +54,42 @@ export default function Post({ link }: Props) {
             {
               <NextLink href={link.is_self ? link.permalink : link.url}>
                 <a dangerouslySetInnerHTML={{ __html: link.title }} target={link.is_self ? '_self' : '_blank'}
-                  className={`lead fw-normal link ${stickiedClass}`} />
+                  className={`lead fw-normal link me-2 ${stickiedClass}`} />
               </NextLink>
             }
-            {' '}
+
             <small>
+              {
+                (link.link_flair_text || (link.link_flair_richtext && link.link_flair_richtext.length > 0)) &&
+                <span className="d-inline-flex align-items-center gap-1 badge text-bg-light border border-secondary me-1">
+                  {
+                    link.link_flair_richtext && link.link_flair_richtext.length > 0
+                      ? link.link_flair_richtext.map((f) => (
+                        <>
+                          {
+                            f.u
+                              ?
+                              <span style={{
+                                backgroundImage: `url(${f.u})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                                height: '15px',
+                                width: '15px'
+                              }} />
+                              : f.t &&
+                              f.t
+                          }
+                        </>
+                      ))
+                      : link.link_flair_text &&
+                      link.link_flair_text
+                  }
+                </span>
+              }
+
               <NextLink href={link.is_self ? `/r/${link.subreddit}` : `/domain/${link.domain}`}>
-                <a className="text-muted ms-1">({link.domain})</a>
+                <a className="text-muted">({link.domain})</a>
               </NextLink>
             </small>
           </Col>
@@ -68,6 +97,7 @@ export default function Post({ link }: Props) {
         <Row>
           <small className="text-gray">
             {getRelativeTime(link.created)} by {' '}
+
             {
               link.author === '[deleted]'
                 ? <span className="text-muted">{link.author}</span>
@@ -84,6 +114,37 @@ export default function Post({ link }: Props) {
                   }
                 </>
             }
+
+            {
+              (subreddit && subreddit !== 'popular' && subreddit !== 'all'
+                && (link.author_flair_text || (link.author_flair_richtext && link.author_flair_richtext.length > 0))) &&
+              <span className="d-inline-flex align-items-center gap-1 badge text-bg-light border border-secondary ms-2">
+                {
+                  link.author_flair_richtext && link.author_flair_richtext.length > 0
+                    ? link.author_flair_richtext.map((f) => (
+                      <>
+                        {
+                          f.u
+                            ?
+                            <span style={{
+                              backgroundImage: `url(${f.u})`,
+                              backgroundSize: 'cover',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundPosition: 'center',
+                              height: '15px',
+                              width: '15px'
+                            }} />
+                            : f.t &&
+                            f.t
+                        }
+                      </>
+                    ))
+                    : link.author_flair_text &&
+                    link.author_flair_text
+                }
+              </span>
+            }
+
             {
               (!subreddit || subreddit === 'popular' || subreddit === 'all') &&
               <>
