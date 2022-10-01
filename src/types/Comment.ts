@@ -11,6 +11,12 @@ export interface Comment extends Created, Votable {
   author: string
   author_flair_css_class: string
   author_flair_text: string
+  author_flair_richtext?: {
+    e: string
+    a?: string
+    t?: string
+    u?: string
+  }[]
   banned_by: string | null
   body: string
   body_html: string

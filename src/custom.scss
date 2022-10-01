@@ -42,6 +42,14 @@ a {
   }
 }
 
+.flair {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 15px;
+  width: 15px;
+}
+
 blockquote {
   @extend .mb-1, .ms-1, .ps-2;
   color: $secondary;

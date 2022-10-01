@@ -79,6 +79,25 @@ export default function Reply({ thingComment }: Props) {
                   </span>]
                 </span>
               }
+
+              {
+                (thingComment.data.author_flair_text
+                  || (thingComment.data.author_flair_richtext && thingComment.data.author_flair_richtext.length > 0)) &&
+                <span className="d-inline-flex align-items-center gap-1 badge text-bg-light border border-secondary ms-1">
+                  {
+                    thingComment.data.author_flair_richtext && thingComment.data.author_flair_richtext.length > 0
+                      ? thingComment.data.author_flair_richtext.map((f, i) => (
+                        f.u
+                          ? <span key={i} className="flair" style={{ backgroundImage: `url(${f.u})` }} />
+                          : f.t &&
+                          <span key={i}>{f.t}</span>
+                      ))
+                      : thingComment.data.author_flair_text &&
+                      thingComment.data.author_flair_text
+                  }
+                </span>
+              }
+
               <span className="ms-1">
                 {
                   thingComment.data.score_hidden
