@@ -11,7 +11,7 @@ type Props = {
 
 export default function Post({ link }: Props) {
   const router = useRouter()
-  const { subreddit } = router.query
+  const { subreddit, where } = router.query
   const stickiedClass = link.stickied && subreddit && subreddit !== 'popular' && subreddit !== 'all' ? 'stickied' : ''
 
   return (
@@ -122,7 +122,8 @@ export default function Post({ link }: Props) {
             }
 
             {
-              (!subreddit || subreddit === 'popular' || subreddit === 'all') &&
+              (!subreddit || subreddit === 'popular' || subreddit === 'all'
+                || (where === 'duplicates' && subreddit !== link.subreddit)) &&
               <>
                 {' '} to {' '}
                 <NextLink href={`/r/${link.subreddit}`}>

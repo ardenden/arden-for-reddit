@@ -49,7 +49,7 @@ export async function fetchData<T>(request: RequestInfo, accessAuthString?: stri
 }
 
 export function useListingLinks(router: NextRouter, cookie?: Cookie) {
-  const { subreddit, homewhere } = router.query
+  const { subreddit, homewhere, where } = router.query
   let url = OAUTH_URL
 
   if (subreddit || homewhere) {
@@ -59,7 +59,7 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
   }
 
   const { data } = useSWR<Listing<Thing<Link>>>(
-    (router.isReady && cookie) ? [url, cookie?.access_auth] : null,
+    (router.isReady && cookie && where !== 'duplicates') ? [url, cookie?.access_auth] : null,
     fetchData
   )
 
@@ -69,7 +69,7 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
 }
 
 export function usePermaLink(router: NextRouter, cookie?: Cookie) {
-  const { sort } = router.query
+  const { sort, where } = router.query
   let url = `${OAUTH_URL}${router.asPath}`
   url = url.includes('#') ? url.substring(0, url.indexOf('#')) : url
   let postUrl = url.includes('?') ? `${url.substring(0, url.indexOf('?'))}?raw_json=1` : `${url}?raw_json=1`
@@ -77,7 +77,9 @@ export function usePermaLink(router: NextRouter, cookie?: Cookie) {
   if (sort) {
     url = `${url}&raw_json=1`
   } else {
-    url = `${url}?raw_json=1`
+    if (where === 'comments') {
+      url = `${url}?raw_json=1`
+    }
   }
 
   const { data: listingLinks } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(
@@ -88,10 +90,15 @@ export function usePermaLink(router: NextRouter, cookie?: Cookie) {
     (router.isReady && cookie) ? [url, cookie?.access_auth] : null,
     fetchData
   )
+  const { data: listingDuplicates } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Link>>]>(
+    (router.isReady && cookie && where === 'duplicates') ? [url, cookie?.access_auth] : null,
+    fetchData
+  )
 
   return {
     listingLinks: listingLinks?.[0],
-    listingReplies: listingReplies?.[1]
+    listingReplies: listingReplies?.[1],
+    listingDuplicates: listingDuplicates?.[1]
   }
 }
 

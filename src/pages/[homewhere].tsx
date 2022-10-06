@@ -2,7 +2,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { Nav } from 'react-bootstrap'
 import NextLink from 'next/link'
-import SubredditPosts from '../components/SubredditPosts'
+import Posts from '../components/Posts'
 
 const HomeWherePage: NextPage = () => {
   const router = useRouter()
@@ -44,7 +44,7 @@ const HomeWherePage: NextPage = () => {
         </>
       }
 
-      <SubredditPosts />
+      <Posts />
     </>
   )
 }
