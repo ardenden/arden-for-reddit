@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import SubredditPosts from '../../../../components/SubredditPosts'
+import Posts from '../../../../components/Posts'
 import { Nav } from 'react-bootstrap'
 import NextLink from 'next/link'
 
@@ -50,7 +50,7 @@ const SubredditWherePage: NextPage = () => {
                   <hr className="my-0" />
                 </>
               }
-              <SubredditPosts />
+              <Posts />
             </>
       }
     </>

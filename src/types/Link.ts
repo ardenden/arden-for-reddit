@@ -44,4 +44,5 @@ export interface Link extends Created, Votable {
   distinguished: string
   stickied: boolean
   suggested_sort: string
+  num_duplicates: number
 }

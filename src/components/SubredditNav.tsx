@@ -44,14 +44,15 @@ export default function SubredditNav() {
                     ? `${w === 'hot' ? '/' : `/${w}`}`
                     : `/r/${subreddit}${w === 'hot' ? '' : `/${w}`}`
               } passHref>
-                <Nav.Link className={`nav-link fw-bold py-1 px-2 ${!subreddit
-                  ? homewhere === w || (!homewhere && w === 'hot')
-                    ? 'border-primary border-bottom-0 text-orange bg-white active-where'
-                    : 'text-blue'
-                  : where === w || (!where && w === 'hot')
-                    ? 'border-primary border-bottom-0 text-orange bg-white active-where'
-                    : 'text-blue'
-                  }`}>
+                <Nav.Link id={`where${w.charAt(0).toUpperCase()}${w.slice(1)}`}
+                  className={`nav-link fw-bold py-1 px-2 ${!subreddit
+                    ? homewhere === w || (!homewhere && w === 'hot')
+                      ? 'border-primary border-bottom-0 text-orange bg-white active-where'
+                      : 'text-blue'
+                    : where === w || (!where && w === 'hot')
+                      ? 'border-primary border-bottom-0 text-orange bg-white active-where'
+                      : 'text-blue'
+                    }`}>
                   {w === 'duplicates' ? 'other discussions' : w}
                 </Nav.Link>
               </Link>
