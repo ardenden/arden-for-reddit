@@ -1,9 +1,10 @@
-import { Col, Image, Row } from 'react-bootstrap'
+import { Col, Collapse, Image, Row } from 'react-bootstrap'
 import { Link } from '../types/Link'
 import NextLink from 'next/link'
 import { getRelativeTime } from '../utils/DateUtils'
 import { useRouter } from 'next/router'
 import { formatScore } from '../utils/NumberUtils'
+import { useState } from 'react'
 
 type Props = {
   link: Link
@@ -13,6 +14,10 @@ export default function Post({ link }: Props) {
   const router = useRouter()
   const { subreddit, where } = router.query
   const stickiedClass = link.stickied && subreddit && subreddit !== 'popular' && subreddit !== 'all' ? 'stickied' : ''
+  const shownAwards = link.all_awardings.filter((_, i) => i < 4 || (i === 4 && link.all_awardings.length === 5))
+  const shownAwardsCount = shownAwards.reduce((prev, curr) => prev + curr.count, 0)
+  const moreAwards = link.all_awardings.filter((ma) => !shownAwards.find((sa) => sa.id === ma.id))
+  const [isCollapsed, setIsCollapsed] = useState(true)
 
   return (
     <>
@@ -130,6 +135,53 @@ export default function Post({ link }: Props) {
                   <a className="text-blue">{`${link.subreddit}`}</a>
                 </NextLink>
               </>
+            }
+
+            {
+              link.all_awardings.length > 0 &&
+              <span className="ms-1">
+                {
+                  shownAwards.map((a, i) => (
+                    <NextLink key={i} href={`${link.subreddit}/gilded`}>
+                      <a className="text-blue">
+                        <Image src={a.resized_icons[2].url} width="16" height="16" className="ms-1" />
+                        {
+                          a.count > 1 &&
+                          <small>{' '} {a.count}</small>
+                        }
+                      </a>
+                    </NextLink>
+                  ))
+                }
+
+                {
+                  (isCollapsed && link.total_awards_received - shownAwardsCount > 0) &&
+                  <>
+                    {' '}
+                    <a onClick={() => setIsCollapsed(false)} className="text-blue" style={{ cursor: 'pointer' }}>
+                      & {link.total_awards_received - shownAwardsCount} more
+                    </a>
+                  </>
+                }
+
+                <Collapse in={!isCollapsed} timeout={50}>
+                  <span>
+                    {
+                      moreAwards.map((a, i) => (
+                        <NextLink key={i} href={`${link.subreddit}/gilded`}>
+                          <a className="text-blue">
+                            <Image src={a.resized_icons[2].url} width="16" height="16" className="ms-1" />
+                            {
+                              a.count > 1 &&
+                              <small>{' '} {a.count}</small>
+                            }
+                          </a>
+                        </NextLink>
+                      ))
+                    }
+                  </span>
+                </Collapse>
+              </span>
             }
           </small>
         </Row>

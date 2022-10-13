@@ -58,6 +58,12 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
     url = `${url}/r/popular${router.asPath}`
   }
 
+  if (url.includes('?')) {
+    url = `${url}&raw_json=1`
+  } else {
+    url = `${url}?raw_json=1`
+  }
+
   const { data } = useSWR<Listing<Thing<Link>>>(
     (router.isReady && cookie && where !== 'duplicates') ? [url, cookie?.access_auth] : null,
     fetchData
@@ -69,17 +75,15 @@ export function useListingLinks(router: NextRouter, cookie?: Cookie) {
 }
 
 export function usePermaLink(router: NextRouter, cookie?: Cookie) {
-  const { sort, where } = router.query
+  const { where } = router.query
   let url = `${OAUTH_URL}${router.asPath}`
   url = url.includes('#') ? url.substring(0, url.indexOf('#')) : url
   let postUrl = url.includes('?') ? `${url.substring(0, url.indexOf('?'))}?raw_json=1` : `${url}?raw_json=1`
 
-  if (sort) {
+  if (url.includes('?')) {
     url = `${url}&raw_json=1`
   } else {
-    if (where === 'comments') {
-      url = `${url}?raw_json=1`
-    }
+    url = `${url}?raw_json=1`
   }
 
   const { data: listingLinks } = useSWR<[Listing<Thing<Link>>, Listing<Thing<Comment | More>>]>(

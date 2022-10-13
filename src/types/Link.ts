@@ -45,4 +45,22 @@ export interface Link extends Created, Votable {
   stickied: boolean
   suggested_sort: string
   num_duplicates: number
+  all_awardings: {
+    id: string
+    name: string
+    icon_url: string
+    resized_icons: {
+      url: string
+      width: number
+      height: number
+    }[]
+    static_icon_url: string
+    resized_static_icons: {
+      url: string
+      width: number
+      height: number
+    }[]
+    count: number
+  }[]
+  total_awards_received: number
 }
