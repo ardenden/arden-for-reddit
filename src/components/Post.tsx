@@ -142,7 +142,7 @@ export default function Post({ link }: Props) {
               <span className="ms-1">
                 {
                   shownAwards.map((a, i) => (
-                    <NextLink key={i} href={`${link.subreddit}/gilded`}>
+                    <NextLink key={i} href={`/r/${link.subreddit}/gilded`}>
                       <a className="text-blue">
                         <Image src={a.resized_icons[2].url} width="16" height="16" className="ms-1" />
                         {
@@ -168,7 +168,7 @@ export default function Post({ link }: Props) {
                   <span>
                     {
                       moreAwards.map((a, i) => (
-                        <NextLink key={i} href={`${link.subreddit}/gilded`}>
+                        <NextLink key={i} href={`/r/${link.subreddit}/gilded`}>
                           <a className="text-blue">
                             <Image src={a.resized_icons[2].url} width="16" height="16" className="ms-1" />
                             {
